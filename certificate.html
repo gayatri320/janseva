@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JANSEVA - Certificate Services</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-bg: #B6D9E9;
+            --dark-accent: #335765;
+            --secondary-accent: #7F543D;
+            --highlight: #e5a13e;
+            --soft-accent: #FDC1B4;
+            --success: #7B9669;
+            --special: #924DBF;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f7fa 0%, var(--primary-bg) 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+          /* Back Button Styling */
+        .back-btn {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            text-decoration: none;
+            background-color: red;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 300px;
+            font-size: 10px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            transition: 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+        
+        .back-btn:hover {
+            background-color: darkred;
+            transform: scale(1.05);
+        }
+
+        .arrow {
+            margin-right: 5px;
+            font-size: 10px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Main Card */
+        .certificate-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            animation: slideUp 0.8s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+        }
+
+        .certificate-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(146, 77, 191, 0.1) 0%, transparent 70%);
+            animation: rotate 30s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Banner Section */
+        .banner {
+            background: linear-gradient(135deg, var(--dark-accent) 0%, #1a3a45 100%);
+            padding: 4rem 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .banner::before {
+            content: '📜';
+            position: absolute;
+            left: -20px;
+            top: -20px;
+            font-size: 15rem;
+            opacity: 0.1;
+            transform: rotate(-15deg);
+            animation: floatLeft 8s ease-in-out infinite;
+        }
+
+        .banner::after {
+            content: '🔖';
+            position: absolute;
+            right: -20px;
+            bottom: -20px;
+            font-size: 15rem;
+            opacity: 0.1;
+            transform: rotate(15deg);
+            animation: floatRight 8s ease-in-out infinite;
+        }
+
+        @keyframes floatLeft {
+            0%, 100% { transform: rotate(-15deg) translate(0, 0); }
+            50% { transform: rotate(-15deg) translate(-20px, -20px); }
+        }
+
+        @keyframes floatRight {
+            0%, 100% { transform: rotate(15deg) translate(0, 0); }
+            50% { transform: rotate(15deg) translate(20px, 20px); }
+        }
+
+        .banner h1 {
+            color: var(--white);
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); }
+            50% { text-shadow: 0 0 20px var(--highlight), 2px 2px 4px rgba(0, 0, 0, 0.3); }
+        }
+
+        .banner h2 {
+            color: var(--soft-accent);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 2;
+            font-weight: 400;
+        }
+
+        /* Coming Soon Badge - Rotation Removed */
+        .coming-soon-badge {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--highlight) 0%, #c4842b 100%);
+            color: var(--white);
+            font-size: 2rem;
+            font-weight: bold;
+            border-radius: 60px;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 10px 30px rgba(229, 161, 62, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 10px 30px rgba(229, 161, 62, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 20px 40px rgba(229, 161, 62, 0.6);
+            }
+        }
+
+        /* Description Section */
+        .description-section {
+            padding: 4rem 3rem;
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%);
+            position: relative;
+            z-index: 1;
+        }
+
+        .description-title {
+            text-align: center;
+            color: var(--dark-accent);
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .description-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--highlight), var(--special), transparent);
+            animation: slideLine 3s ease-in-out infinite;
+        }
+
+        @keyframes slideLine {
+            0%, 100% { opacity: 0.5; width: 50%; left: 25%; }
+            50% { opacity: 1; width: 100%; left: 0; }
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-item {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid rgba(51, 87, 101, 0.1);
+            animation: fadeInUp 0.6s ease;
+            animation-fill-mode: both;
+        }
+
+        .feature-item:nth-child(1) { animation-delay: 0.1s; }
+        .feature-item:nth-child(2) { animation-delay: 0.2s; }
+        .feature-item:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feature-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, var(--primary-bg) 0%, var(--special) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .feature-item:hover .feature-icon {
+            transform: rotate(360deg) scale(1.1);
+        }
+
+        .feature-item h3 {
+            color: var(--dark-accent);
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .feature-item p {
+            color: var(--secondary-accent);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Certificate Types Section */
+        .certificate-types {
+            padding: 4rem 3rem;
+            background: linear-gradient(135deg, var(--primary-bg) 0%, #c4e0f0 100%);
+            position: relative;
+            z-index: 1;
+        }
+
+        .types-title {
+            text-align: center;
+            color: var(--dark-accent);
+            font-size: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .types-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .type-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+            padding: 2rem 1rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+            animation: fadeInScale 0.6s ease;
+            animation-fill-mode: both;
+        }
+
+        .type-card:nth-child(1) { animation-delay: 0.1s; }
+        .type-card:nth-child(2) { animation-delay: 0.2s; }
+        .type-card:nth-child(3) { animation-delay: 0.3s; }
+        .type-card:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .type-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--highlight) 0%, transparent 100%);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .type-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--highlight);
+        }
+
+        .type-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .type-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .type-card h4 {
+            color: var(--dark-accent);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .type-card p {
+            color: var(--secondary-accent);
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Disabled Form Section */
+        .form-section {
+            padding: 4rem 3rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #e9ecef 100%);
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-title {
+            text-align: center;
+            color: var(--dark-accent);
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            opacity: 0.7;
+        }
+
+        .disabled-form {
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.6;
+            pointer-events: none;
+            position: relative;
+        }
+
+        .disabled-form::before {
+            content: '⏳';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            font-size: 5rem;
+            opacity: 0.3;
+            animation: spin 4s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dark-accent);
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: #f1f3f5;
+            color: #6c757d;
+        }
+
+        .form-group input[disabled],
+        .form-group select[disabled],
+        .form-group textarea[disabled] {
+            cursor: not-allowed;
+            background: #e9ecef;
+            border-style: dashed;
+        }
+
+        .disabled-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #adb5bd;
+            color: var(--white);
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: not-allowed;
+            opacity: 0.7;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .disabled-btn::after {
+            content: '🔒';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+        }
+
+        /* Integration Icons */
+        .integration-icons {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .integration-icon {
+            text-align: center;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .integration-icon:nth-child(1) { animation-delay: 0s; }
+        .integration-icon:nth-child(2) { animation-delay: 0.5s; }
+        .integration-icon:nth-child(3) { animation-delay: 1s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .integration-icon i {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .integration-icon span {
+            color: var(--dark-accent);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* Notification Banner */
+        .notification-banner {
+            background: linear-gradient(135deg, var(--special) 0%, #7e3da6 100%);
+            color: var(--white);
+            padding: 1rem;
+            text-align: center;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 2;
+            animation: slideInDown 0.8s ease;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .notification-banner i {
+            margin: 0 10px;
+            animation: ring 2s ease-in-out infinite;
+        }
+
+        @keyframes ring {
+            0%, 100% { transform: rotate(0); }
+            20% { transform: rotate(15deg); }
+            40% { transform: rotate(-15deg); }
+            60% { transform: rotate(10deg); }
+            80% { transform: rotate(-10deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .banner h1 {
+                font-size: 2.2rem;
+            }
+
+            .banner h2 {
+                font-size: 1.5rem;
+            }
+
+            .coming-soon-badge {
+                font-size: 1.5rem;
+                padding: 0.8rem 1.5rem;
+            }
+
+            .description-section,
+            .certificate-types,
+            .form-section {
+                padding: 2rem 1.5rem;
+            }
+
+            .features-grid,
+            .types-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="certificate-card">
+            <!-- Notification Banner -->
+            <div class="notification-banner">
+                <i>🔔</i>
+                Digital certificate services launching soon! Get notified when we go live.
+                <i>🔔</i>
+            </div>
+                    <a href="index.html" class="back-btn">
+            <span class="arrow">&#8592;</span> Back
+        </a>
+
+            <!-- Main Banner -->
+            <div class="banner">
+                <h1>📜 Certificate Services</h1>
+                <h2>Domicile • Income • Caste • Birth Certificates</h2>
+                <div class="coming-soon-badge">
+                    🚀 Coming Soon 🚀
+                </div>
+            </div>
+
+            <!-- Description Section -->
+            <div class="description-section">
+                <h3 class="description-title">Digital Certificate Processing System</h3>
+                
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">🔐</div>
+                        <h3>DigiLocker Integration</h3>
+                        <p>Seamless integration with DigiLocker for secure storage and retrieval of digital certificates. Access your documents anytime, anywhere.</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">🆔</div>
+                        <h3>Aadhaar Verification</h3>
+                        <p>Instant e-KYC through Aadhaar authentication ensuring authentic certificate issuance and preventing fraud.</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">📄</div>
+                        <h3>Paperless System</h3>
+                        <p>100% paperless processing with digital signatures and QR code verification. Eco-friendly and efficient certificate management.</p>
+                    </div>
+                </div>
+
+                <!-- Integration Icons -->
+                <div class="integration-icons">
+                    <div class="integration-icon">
+                        <i>📱</i>
+                        <span>DigiLocker</span>
+                    </div>
+                    <div class="integration-icon">
+                        <i>🆔</i>
+                        <span>Aadhaar</span>
+                    </div>
+                    <div class="integration-icon">
+                        <i>📧</i>
+                        <span>Email Delivery</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Certificate Types -->
+            <div class="certificate-types">
+                <h3 class="types-title">Certificates You Can Apply For</h3>
+                
+                <div class="types-grid">
+                    <div class="type-card">
+                        <div class="type-icon">🏠</div>
+                        <h4>Domicile Certificate</h4>
+                        <p>Proof of residence for state government benefits and schemes</p>
+                    </div>
+
+                    <div class="type-card">
+                        <div class="type-icon">💰</div>
+                        <h4>Income Certificate</h4>
+                        <p>Income verification for scholarships and financial assistance</p>
+                    </div>
+
+                    <div class="type-card">
+                        <div class="type-icon">👥</div>
+                        <h4>Caste Certificate</h4>
+                        <p>Community certificate for reservation benefits</p>
+                    </div>
+
+                    <div class="type-card">
+                        <div class="type-icon">👶</div>
+                        <h4>Birth Certificate</h4>
+                        <p>Official record of birth for legal and educational purposes</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Disabled Form Section -->
+            <div class="form-section">
+                <h3 class="form-title">Application Form (Coming Soon)</h3>
+                
+                <div class="disabled-form">
+                    <div class="form-group">
+                        <label>Select Certificate Type</label>
+                        <select disabled>
+                            <option>Domicile Certificate</option>
+                            <option>Income Certificate</option>
+                            <option>Caste Certificate</option>
+                            <option>Birth Certificate</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Aadhaar Number</label>
+                        <input type="text" value="XXXX-XXXX-XXXX" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" value="John Doe" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Father's Name</label>
+                        <input type="text" value="James Doe" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Date of Birth</label>
+                        <input type="date" value="1990-01-01" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Address</label>
+                        <textarea rows="3" disabled>123, Main Street, City - 400001</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Upload Documents</label>
+                        <input type="file" disabled>
+                    </div>
+
+                    <button class="disabled-btn" disabled>
+                        Submit Application
+                    </button>
+                </div>
+            </div>
+
+            <!-- Decorative Elements -->
+            <div style="height: 10px; background: linear-gradient(90deg, var(--highlight), var(--special), var(--success));"></div>
+        </div>
+    </div>
+
+    <script>
+        // Add floating particles animation
+        function createParticles() {
+            const colors = ['#e5a13e', '#924DBF', '#7B9669', '#FDC1B4'];
+            const container = document.querySelector('.certificate-card');
+            
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: absolute;
+                    width: ${Math.random() * 10 + 5}px;
+                    height: ${Math.random() * 10 + 5}px;
+                    background: ${colors[Math.floor(Math.random() * colors.length)]};
+                    border-radius: 50%;
+                    pointer-events: none;
+                    opacity: 0.1;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    animation: floatParticle ${Math.random() * 10 + 10}s linear infinite;
+                    z-index: 0;
+                `;
+                container.appendChild(particle);
+            }
+        }
+
+        // Add particle animation keyframes
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes floatParticle {
+                0% {
+                    transform: translate(0, 0) rotate(0deg);
+                }
+                25% {
+                    transform: translate(${Math.random() * 100}px, ${Math.random() * 100}px) rotate(90deg);
+                }
+                50% {
+                    transform: translate(${Math.random() * -100}px, ${Math.random() * 100}px) rotate(180deg);
+                }
+                75% {
+                    transform: translate(${Math.random() * -100}px, ${Math.random() * -100}px) rotate(270deg);
+                }
+                100% {
+                    transform: translate(0, 0) rotate(360deg);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Create particles on load
+        window.addEventListener('load', createParticles);
+
+        // Add click animation on badge
+        document.querySelector('.coming-soon-badge').addEventListener('click', function(e) {
+            e.preventDefault();
+            this.style.animation = 'none';
+            this.offsetHeight; // Trigger reflow
+            this.style.animation = 'pulse 2s ease-in-out infinite';
+            
+            // Show notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--highlight);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 50px;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+                animation: slideInRight 0.3s ease;
+                z-index: 9999;
+            `;
+            notification.innerHTML = '📢 We\'ll notify you when services launch!';
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        });
+
+        // Add hover effect on type cards
+        document.querySelectorAll('.type-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.05)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Countdown simulation (optional)
+        function updateCountdown() {
+            const launchDate = new Date('2024-06-01').getTime();
+            const now = new Date().getTime();
+            const distance = launchDate - now;
+            
+            if (distance > 0) {
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                
+                // Update notification banner
+                const banner = document.querySelector('.notification-banner');
+                if (banner) {
+                    banner.innerHTML = `<i>🔔</i> Launching in approximately ${days} days ${hours} hours! Be the first to apply. <i>🔔</i>`;
+                }
+            }
+        }
+
+        // Update countdown every hour
+        setInterval(updateCountdown, 3600000);
+        updateCountdown();
+    </script>
+</body>
+</html>

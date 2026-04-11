@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JANSEVA - Municipal Services</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-bg: #B6D9E9;
+            --dark-accent: #335765;
+            --secondary-accent: #7F543D;
+            --highlight: #e5a13e;
+            --soft-accent: #FDC1B4;
+            --success: #7B9669;
+            --special: #924DBF;
+            --danger: #ff4444;
+            --warning: #ffbb33;
+            --info: #33b5e5;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e8f0f5 0%, var(--primary-bg) 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        /* Back Button Styling */
+    .back-btn {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        text-decoration: none;
+        background-color: red;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 50px;
+        font-size: 18px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        transition: 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .back-btn:hover {
+        background-color: darkred;
+        transform: scale(1.05);
+    }
+
+    .arrow {
+        margin-right: 8px;
+        font-size: 20px;
+    }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--dark-accent) 0%, #234956 100%);
+            padding: 2.5rem;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            margin-bottom: 2.5rem;
+            animation: slideDown 0.6s ease;
+            position: relative;
+            overflow: hidden;
+            color: var(--white);
+        }
+
+        .header::before {
+            content: '🏛️';
+            position: absolute;
+            right: 30px;
+            bottom: 10px;
+            font-size: 8rem;
+            opacity: 0.1;
+            transform: rotate(5deg);
+            animation: floatBuilding 6s ease-in-out infinite;
+        }
+
+        @keyframes floatBuilding {
+            0%, 100% { transform: rotate(5deg) translateY(0); }
+            50% { transform: rotate(5deg) translateY(-10px); }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header h1 i {
+            font-size: 3rem;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Service Grid */
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Service Card */
+        .service-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: var(--transition);
+            animation: fadeInUp 0.6s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .service-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header {
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            color: var(--white);
+        }
+
+        .card-header.property-tax {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+        }
+
+        .card-header.waste-complaint {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+        }
+
+        .card-header.street-light {
+            background: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%);
+        }
+
+        .card-header::after {
+            content: '🏛️';
+            position: absolute;
+            right: -10px;
+            bottom: -10px;
+            font-size: 6rem;
+            opacity: 0.2;
+            transform: rotate(10deg);
+            animation: floatIcon 4s ease-in-out infinite;
+        }
+
+        .card-header.property-tax::after { content: '💰'; }
+        .card-header.waste-complaint::after { content: '🗑️'; }
+        .card-header.street-light::after { content: '💡'; }
+
+        @keyframes floatIcon {
+            0%, 100% { transform: translateY(0) rotate(10deg); }
+            50% { transform: translateY(-10px) rotate(15deg); }
+        }
+
+        .card-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.8rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.7rem;
+            color: var(--dark-accent);
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+        }
+
+        .form-group label i {
+            margin-right: 10px;
+            color: var(--highlight);
+            width: 20px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: #f8fafc;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--highlight);
+            background: var(--white);
+            box-shadow: 0 0 0 4px rgba(229, 161, 62, 0.15);
+        }
+
+        .form-group input.error,
+        .form-group select.error {
+            border-color: var(--danger);
+            animation: shake 0.3s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-8px); }
+            40% { transform: translateX(8px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .error-message::before {
+            content: '⚠️';
+            font-size: 12px;
+        }
+
+        /* Complaint Types Grid */
+        .complaint-types {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .complaint-type {
+            padding: 1.2rem 0.8rem;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .complaint-type i {
+            display: block;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .complaint-type span {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .complaint-type:hover {
+            border-color: var(--highlight);
+            background: rgba(229, 161, 62, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .complaint-type.selected {
+            border-color: var(--highlight);
+            background: linear-gradient(135deg, var(--highlight) 0%, #c4842b 100%);
+            color: var(--white);
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--dark-accent) 0%, #2c3e50 100%);
+            color: var(--white);
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(44, 62, 80, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: var(--white);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%);
+            color: var(--dark-accent);
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(243, 156, 18, 0.4);
+        }
+
+        /* Dynamic Status Tracking Section */
+        .status-section {
+            background: var(--white);
+            border-radius: 30px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            margin-top: 2.5rem;
+            animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .status-header h3 {
+            color: var(--dark-accent);
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-header h3 i {
+            color: var(--highlight);
+            font-size: 2rem;
+        }
+
+        .status-filters {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .status-filter {
+            padding: 0.6rem 1.2rem;
+            border: 2px solid #e9ecef;
+            border-radius: 50px;
+            background: transparent;
+            color: var(--dark-accent);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .status-filter:hover {
+            border-color: var(--highlight);
+            background: rgba(229, 161, 62, 0.1);
+        }
+
+        .status-filter.active {
+            background: var(--highlight);
+            border-color: var(--highlight);
+            color: var(--white);
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .status-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #e9ecef 100%);
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: var(--transition);
+            animation: fadeIn 0.5s ease;
+            border-left: 5px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .status-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .status-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .status-card.pending {
+            border-left-color: var(--warning);
+        }
+
+        .status-card.processing {
+            border-left-color: var(--info);
+        }
+
+        .status-card.resolved {
+            border-left-color: var(--success);
+        }
+
+        .status-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .status-type {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: var(--dark-accent);
+        }
+
+        .status-type i {
+            font-size: 1.2rem;
+        }
+
+        .status-badge {
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-badge.pending {
+            background: var(--warning);
+            color: var(--dark-accent);
+        }
+
+        .status-badge.processing {
+            background: var(--info);
+            color: var(--white);
+        }
+
+        .status-badge.resolved {
+            background: var(--success);
+            color: var(--white);
+        }
+
+        .status-details {
+            margin: 1rem 0;
+        }
+
+        .status-detail-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            padding: 0.3rem 0;
+            border-bottom: 1px dashed #dee2e6;
+        }
+
+        .status-detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: var(--secondary-accent);
+            font-size: 0.9rem;
+        }
+
+        .detail-value {
+            color: var(--dark-accent);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .progress-container {
+            margin: 1rem 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #dee2e6;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--highlight), var(--success));
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.3rem;
+            font-size: 0.8rem;
+            color: var(--secondary-accent);
+        }
+
+        .status-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .status-time {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--secondary-accent);
+            font-size: 0.85rem;
+        }
+
+        .status-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .status-btn {
+            padding: 0.4rem 0.8rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: var(--transition);
+        }
+
+        .status-btn.view {
+            background: var(--info);
+            color: var(--white);
+        }
+
+        .status-btn.view:hover {
+            background: #1e7e8f;
+        }
+
+        .status-btn.track {
+            background: var(--special);
+            color: var(--white);
+        }
+
+        .status-btn.track:hover {
+            background: #7e3da6;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: 40px;
+            padding: 3rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: scaleIn 0.5s ease;
+            position: relative;
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, var(--highlight) 0%, #c4842b 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--white);
+            animation: bounceIn 0.8s ease;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .modal h3 {
+            color: var(--dark-accent);
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal p {
+            color: var(--secondary-accent);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        .modal-details {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .modal-details div {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px dashed #dee2e6;
+        }
+
+        .modal-details div:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .modal-details span {
+            color: var(--dark-accent);
+            font-weight: 600;
+        }
+
+        .modal-details span:last-child {
+            color: var(--highlight);
+        }
+
+        .modal-close {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--dark-accent) 0%, #1a3a45 100%);
+            color: var(--white);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(51, 87, 101, 0.4);
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: var(--white);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .service-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .complaint-types {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .status-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .status-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>
+                <i>🏛️</i>
+                Municipal Services
+            </h1>
+            <p>Manage property taxes, report waste collection issues, and street light complaints</p>
+        </div>
+         <a href="index.html" class="back-btn">
+    <span class="arrow">&#8592;</span> Back
+</a>
+        <!-- Service Grid -->
+        <div class="service-grid">
+            <!-- Property Tax Payment Card -->
+            <div class="service-card">
+                <div class="card-header property-tax">
+                    <h2>💰 Property Tax Payment</h2>
+                    <p>Pay your property taxes online</p>
+                </div>
+                <div class="card-body">
+                    <form id="propertyTaxForm" onsubmit="return false;">
+                        <div class="form-group">
+                            <label>
+                                <i>🔑</i>
+                                Property ID
+                            </label>
+                            <input type="text" id="propertyId" maxlength="12" placeholder="Enter property ID (e.g., PT-2024-001)">
+                            <span class="error-message" id="propertyIdError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i>👤</i>
+                                Owner Name
+                            </label>
+                            <input type="text" id="ownerName" placeholder="Enter owner's full name">
+                            <span class="error-message" id="ownerNameError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i>💰</i>
+                                Amount (₹)
+                            </label>
+                            <input type="number" id="taxAmount" min="1" step="0.01" placeholder="Enter tax amount">
+                            <span class="error-message" id="taxAmountError"></span>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="payPropertyTax()">
+                            Pay Property Tax
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Waste Collection Complaint Card -->
+            <div class="service-card">
+                <div class="card-header waste-complaint">
+                    <h2>🗑️ Waste Collection Complaint</h2>
+                    <p>Report garbage collection issues</p>
+                </div>
+                <div class="card-body">
+                    <form id="wasteComplaintForm" onsubmit="return false;">
+                        <div class="form-group">
+                            <label>
+                                <i>📍</i>
+                                Area / Locality
+                            </label>
+                            <input type="text" id="wasteArea" placeholder="Enter your area/locality">
+                            <span class="error-message" id="wasteAreaError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i>⚠️</i>
+                                Complaint Type
+                            </label>
+                            <div class="complaint-types">
+                                <div class="complaint-type" onclick="selectWasteType('not-collected', this)">
+                                    <i>🚫</i>
+                                    <span>Not Collected</span>
+                                </div>
+                                <div class="complaint-type" onclick="selectWasteType('overflowing', this)">
+                                    <i>📦</i>
+                                    <span>Overflowing Bins</span>
+                                </div>
+                                <div class="complaint-type" onclick="selectWasteType('illegal-dumping', this)">
+                                    <i>⚠️</i>
+                                    <span>Illegal Dumping</span>
+                                </div>
+                                <div class="complaint-type" onclick="selectWasteType('missed-pickup', this)">
+                                    <i>❌</i>
+                                    <span>Missed Pickup</span>
+                                </div>
+                            </div>
+                            <input type="hidden" id="wasteType">
+                            <span class="error-message" id="wasteTypeError"></span>
+                        </div>
+
+                        <button class="btn btn-success" onclick="registerWasteComplaint()">
+                            Register Complaint
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Street Light Complaint Card -->
+            <div class="service-card">
+                <div class="card-header street-light">
+                    <h2>💡 Street Light Complaint</h2>
+                    <p>Report street light issues</p>
+                </div>
+                <div class="card-body">
+                    <form id="streetLightForm" onsubmit="return false;">
+                        <div class="form-group">
+                            <label>
+                                <i>📍</i>
+                                Location
+                            </label>
+                            <input type="text" id="lightLocation" placeholder="Enter street name / landmark">
+                            <span class="error-message" id="lightLocationError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i>🔢</i>
+                                Pole Number (if available)
+                            </label>
+                            <input type="text" id="poleNumber" placeholder="Enter pole number (e.g., SL-123)">
+                            <span class="error-message" id="poleNumberError"></span>
+                        </div>
+
+                        <button class="btn btn-warning" onclick="registerStreetLightComplaint()">
+                            Report Street Light Issue
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dynamic Status Tracking Section -->
+        <div class="status-section">
+            <div class="status-header">
+                <h3>
+                    <i>📊</i>
+                    Live Complaint Status Tracking
+                </h3>
+                <div class="status-filters">
+                    <button class="status-filter active" onclick="filterStatus('all')">All</button>
+                    <button class="status-filter" onclick="filterStatus('pending')">Pending</button>
+                    <button class="status-filter" onclick="filterStatus('processing')">Processing</button>
+                    <button class="status-filter" onclick="filterStatus('resolved')">Resolved</button>
+                </div>
+            </div>
+
+            <div class="status-grid" id="statusGrid">
+                <!-- Status cards will be dynamically added here -->
+                <div class="status-card pending">
+                    <div class="status-card-header">
+                        <div class="status-type">
+                            <i>🗑️</i>
+                            Waste Complaint
+                        </div>
+                        <span class="status-badge pending">Pending</span>
+                    </div>
+                    <div class="status-details">
+                        <div class="status-detail-item">
+                            <span class="detail-label">Location:</span>
+                            <span class="detail-value">Sector 22, Noida</span>
+                        </div>
+                        <div class="status-detail-item">
+                            <span class="detail-label">Type:</span>
+                            <span class="detail-value">Not Collected</span>
+                        </div>
+                        <div class="status-detail-item">
+                            <span class="detail-label">Complaint ID:</span>
+                            <span class="detail-value">WM240215-001</span>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 20%"></div>
+                        </div>
+                        <div class="progress-labels">
+                            <span>Pending</span>
+                            <span>Processing</span>
+                            <span>Resolved</span>
+                        </div>
+                    </div>
+                    <div class="status-footer">
+                        <div class="status-time">
+                            <i>⏱️</i>
+                            2 hours ago
+                        </div>
+                        <div class="status-actions">
+                            <button class="status-btn view" onclick="viewDetails('WM240215-001')">View</button>
+                            <button class="status-btn track" onclick="trackStatus('WM240215-001')">Track</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="status-card processing">
+                    <div class="status-card-header">
+                        <div class="status-type">
+                            <i>💡</i>
+                            Street Light
+                        </div>
+                        <span class="status-badge processing">Processing</span>
+                    </div>
+                    <div class="status-details">
+                        <div class="status-detail-item">
+                            <span class="detail-label">Location:</span>
+                            <span class="detail-value">MG Road, Bangalore</span>
+                        </div>
+                        <div class="status-detail-item">
+                            <span class="detail-label">Pole No:</span>
+                            <span class="detail-value">SL-456</span>
+                        </div>
+                        <div class="status-detail-item">
+                            <span class="detail-label">Complaint ID:</span>
+                            <span class="detail-value">SL240214-089</span>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 60%"></div>
+                        </div>
+                        <div class="progress-labels">
+                            <span>Pending</span>
+                            <span>Processing</span>
+                            <span>Resolved</span>
+                        </div>
+                    </div>
+                    <div class="status-footer">
+                        <div class="status-time">
+                            <i>⏱️</i>
+                            5 hours ago
+                        </div>
+                        <div class="status-actions">
+                            <button class="status-btn view" onclick="viewDetails('SL240214-089')">View</button>
+                            <button class="status-btn track" onclick="trackStatus('SL240214-089')">Track</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="status-card resolved">
+                    <div class="status-card-header">
+                        <div class="status-type">
+                            <i>💰</i>
+                            Property Tax
+                        </div>
+                        <span class="status-badge resolved">Resolved</span>
+                    </div>
+                    <div class="status-details">
+                        <div class="status-detail-item">
+                            <span class="detail-label">Property ID:</span>
+                            <span class="detail-value">PT-2024-1234</span>
+                        </div>
+                        <div class="status-detail-item">
+                            <span class="detail-label">Amount:</span>
+                            <span class="detail-value">₹12,500</span>
+                        </div>
+                        <div class="status-detail-item">
+                            <span class="detail-label">Transaction ID:</span>
+                            <span class="detail-value">TXN789012345</span>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 100%"></div>
+                        </div>
+                        <div class="progress-labels">
+                            <span>Pending</span>
+                            <span>Processing</span>
+                            <span>Resolved</span>
+                        </div>
+                    </div>
+                    <div class="status-footer">
+                        <div class="status-time">
+                            <i>⏱️</i>
+                            1 day ago
+                        </div>
+                        <div class="status-actions">
+                            <button class="status-btn view" onclick="viewDetails('TXN789012345')">View</button>
+                            <button class="status-btn track" onclick="trackStatus('TXN789012345')">Receipt</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon" id="modalIcon">✅</div>
+            <h3 id="modalTitle">Success!</h3>
+            <p id="modalMessage">Your request has been processed successfully.</p>
+            <div class="modal-details" id="modalDetails">
+                <div>
+                    <span>Reference Number:</span>
+                    <span id="refNumber">REF123456</span>
+                </div>
+                <div>
+                    <span>Date & Time:</span>
+                    <span id="modalDateTime">15 Feb 2024, 10:30 AM</span>
+                </div>
+                <div>
+                    <span>Amount:</span>
+                    <span id="modalAmount">-</span>
+                </div>
+            </div>
+            <button class="modal-close" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <!-- Tracking Modal -->
+    <div class="modal" id="trackingModal">
+        <div class="modal-content">
+            <div class="modal-icon">📍</div>
+            <h3>Track Complaint Status</h3>
+            <p>Real-time updates for your complaint</p>
+            <div class="modal-details" id="trackingDetails">
+                <!-- Dynamic tracking details will be inserted here -->
+            </div>
+            <button class="modal-close" onclick="closeTrackingModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // State management
+        let selectedWasteType = '';
+        let complaints = [
+            {
+                id: 'WM240215-001',
+                type: 'waste',
+                icon: '🗑️',
+                typeName: 'Waste Complaint',
+                location: 'Sector 22, Noida',
+                details: 'Not Collected',
+                status: 'pending',
+                progress: 20,
+                time: '2 hours ago'
+            },
+            {
+                id: 'SL240214-089',
+                type: 'street-light',
+                icon: '💡',
+                typeName: 'Street Light',
+                location: 'MG Road, Bangalore',
+                details: 'Pole: SL-456',
+                status: 'processing',
+                progress: 60,
+                time: '5 hours ago'
+            },
+            {
+                id: 'TXN789012345',
+                type: 'tax',
+                icon: '💰',
+                typeName: 'Property Tax',
+                location: 'PT-2024-1234',
+                details: '₹12,500',
+                status: 'resolved',
+                progress: 100,
+                time: '1 day ago'
+            }
+        ];
+
+        // Select waste complaint type
+        function selectWasteType(type, element) {
+            document.querySelectorAll('.complaint-type').forEach(el => {
+                el.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            document.getElementById('wasteType').value = type;
+            selectedWasteType = type;
+            document.getElementById('wasteTypeError').textContent = '';
+        }
+
+        // Pay Property Tax
+        function payPropertyTax() {
+            clearErrors();
+            
+            const propertyId = document.getElementById('propertyId').value;
+            const ownerName = document.getElementById('ownerName').value;
+            const amount = document.getElementById('taxAmount').value;
+            
+            let isValid = true;
+            
+            if (!propertyId) {
+                showError('propertyIdError', 'Property ID is required');
+                isValid = false;
+            }
+            
+            if (!ownerName) {
+                showError('ownerNameError', 'Owner name is required');
+                isValid = false;
+            }
+            
+            if (!amount) {
+                showError('taxAmountError', 'Amount is required');
+                isValid = false;
+            } else if (parseFloat(amount) <= 0) {
+                showError('taxAmountError', 'Amount must be greater than 0');
+                isValid = false;
+            }
+            
+            if (isValid) {
+                // Show processing
+                const btn = document.querySelector('#propertyTaxForm .btn-primary');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<span class="loading-spinner"></span> Processing...';
+                btn.disabled = true;
+                
+                setTimeout(() => {
+                    const txnId = 'TXN' + Math.floor(Math.random() * 10000000);
+                    
+                    // Add to status tracking
+                    addComplaintToTracking({
+                        id: txnId,
+                        type: 'tax',
+                        icon: '💰',
+                        typeName: 'Property Tax',
+                        location: propertyId,
+                        details: `Owner: ${ownerName}, Amount: ₹${amount}`,
+                        status: 'resolved',
+                        progress: 100,
+                        time: 'Just now'
+                    });
+                    
+                    // Show modal
+                    document.getElementById('modalIcon').innerHTML = '💰';
+                    document.getElementById('modalTitle').textContent = 'Payment Successful!';
+                    document.getElementById('modalMessage').textContent = `Property tax payment of ₹${amount} completed.`;
+                    document.getElementById('refNumber').textContent = txnId;
+                    document.getElementById('modalDateTime').textContent = new Date().toLocaleString();
+                    document.getElementById('modalAmount').textContent = '₹' + parseFloat(amount).toFixed(2);
+                    
+                    document.getElementById('successModal').classList.add('active');
+                    
+                    // Reset button and form
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    document.getElementById('propertyTaxForm').reset();
+                    
+                    showAlert(`Property tax payment successful. Transaction ID: ${txnId}`, 'success');
+                }, 2000);
+            }
+        }
+
+        // Register Waste Complaint
+        function registerWasteComplaint() {
+            clearErrors();
+            
+            const area = document.getElementById('wasteArea').value;
+            
+            let isValid = true;
+            
+            if (!area) {
+                showError('wasteAreaError', 'Area is required');
+                isValid = false;
+            }
+            
+            if (!selectedWasteType) {
+                showError('wasteTypeError', 'Please select complaint type');
+                isValid = false;
+            }
+            
+            if (isValid) {
+                const complaintId = 'WM' + new Date().toISOString().slice(2,10).replace(/-/g,'') + '-' + Math.floor(Math.random() * 1000);
+                const typeNames = {
+                    'not-collected': 'Not Collected',
+                    'overflowing': 'Overflowing Bins',
+                    'illegal-dumping': 'Illegal Dumping',
+                    'missed-pickup': 'Missed Pickup'
+                };
+                
+                // Add to status tracking
+                addComplaintToTracking({
+                    id: complaintId,
+                    type: 'waste',
+                    icon: '🗑️',
+                    typeName: 'Waste Complaint',
+                    location: area,
+                    details: typeNames[selectedWasteType],
+                    status: 'pending',
+                    progress: 20,
+                    time: 'Just now'
+                });
+                
+                document.getElementById('modalIcon').innerHTML = '🗑️';
+                document.getElementById('modalTitle').textContent = 'Complaint Registered!';
+                document.getElementById('modalMessage').textContent = 'Your waste collection complaint has been registered.';
+                document.getElementById('refNumber').textContent = complaintId;
+                document.getElementById('modalDateTime').textContent = new Date().toLocaleString();
+                document.getElementById('modalAmount').textContent = typeNames[selectedWasteType];
+                
+                document.getElementById('successModal').classList.add('active');
+                
+                showAlert(`Complaint registered successfully. ID: ${complaintId}`, 'success');
+                
+                // Reset form
+                document.getElementById('wasteComplaintForm').reset();
+                document.querySelectorAll('.complaint-type').forEach(el => el.classList.remove('selected'));
+                selectedWasteType = '';
+            }
+        }
+
+        // Register Street Light Complaint
+        function registerStreetLightComplaint() {
+            clearErrors();
+            
+            const location = document.getElementById('lightLocation').value;
+            const poleNumber = document.getElementById('poleNumber').value;
+            
+            let isValid = true;
+            
+            if (!location) {
+                showError('lightLocationError', 'Location is required');
+                isValid = false;
+            }
+            
+            if (isValid) {
+                const complaintId = 'SL' + new Date().toISOString().slice(2,10).replace(/-/g,'') + '-' + Math.floor(Math.random() * 1000);
+                
+                // Add to status tracking
+                addComplaintToTracking({
+                    id: complaintId,
+                    type: 'street-light',
+                    icon: '💡',
+                    typeName: 'Street Light',
+                    location: location,
+                    details: poleNumber ? `Pole: ${poleNumber}` : 'No pole number',
+                    status: 'pending',
+                    progress: 20,
+                    time: 'Just now'
+                });
+                
+                document.getElementById('modalIcon').innerHTML = '💡';
+                document.getElementById('modalTitle').textContent = 'Complaint Registered!';
+                document.getElementById('modalMessage').textContent = 'Your street light complaint has been registered.';
+                document.getElementById('refNumber').textContent = complaintId;
+                document.getElementById('modalDateTime').textContent = new Date().toLocaleString();
+                document.getElementById('modalAmount').textContent = poleNumber || 'Location recorded';
+                
+                document.getElementById('successModal').classList.add('active');
+                
+                showAlert(`Street light complaint registered. ID: ${complaintId}`, 'success');
+                
+                // Reset form
+                document.getElementById('streetLightForm').reset();
+            }
+        }
+
+        // Add complaint to tracking
+        function addComplaintToTracking(complaint) {
+            complaints.unshift(complaint);
+            updateStatusGrid();
+            
+            // Limit to 10 complaints
+            if (complaints.length > 10) {
+                complaints.pop();
+            }
+        }
+
+        // Update status grid
+        function updateStatusGrid(filter = 'all') {
+            const grid = document.getElementById('statusGrid');
+            grid.innerHTML = '';
+            
+            const filteredComplaints = filter === 'all' 
+                ? complaints 
+                : complaints.filter(c => c.status === filter);
+            
+            filteredComplaints.forEach(complaint => {
+                const card = createStatusCard(complaint);
+                grid.appendChild(card);
+            });
+        }
+
+        // Create status card
+        function createStatusCard(complaint) {
+            const card = document.createElement('div');
+            card.className = `status-card ${complaint.status}`;
+            card.innerHTML = `
+                <div class="status-card-header">
+                    <div class="status-type">
+                        <i>${complaint.icon}</i>
+                        ${complaint.typeName}
+                    </div>
+                    <span class="status-badge ${complaint.status}">${complaint.status}</span>
+                </div>
+                <div class="status-details">
+                    <div class="status-detail-item">
+                        <span class="detail-label">Location:</span>
+                        <span class="detail-value">${complaint.location}</span>
+                    </div>
+                    <div class="status-detail-item">
+                        <span class="detail-label">Details:</span>
+                        <span class="detail-value">${complaint.details}</span>
+                    </div>
+                    <div class="status-detail-item">
+                        <span class="detail-label">Complaint ID:</span>
+                        <span class="detail-value">${complaint.id}</span>
+                    </div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${complaint.progress}%"></div>
+                    </div>
+                    <div class="progress-labels">
+                        <span>Pending</span>
+                        <span>Processing</span>
+                        <span>Resolved</span>
+                    </div>
+                </div>
+                <div class="status-footer">
+                    <div class="status-time">
+                        <i>⏱️</i>
+                        ${complaint.time}
+                    </div>
+                    <div class="status-actions">
+                        <button class="status-btn view" onclick="viewDetails('${complaint.id}')">View</button>
+                        <button class="status-btn track" onclick="trackStatus('${complaint.id}')">Track</button>
+                    </div>
+                </div>
+            `;
+            return card;
+        }
+
+        // Filter status
+        function filterStatus(filter) {
+            document.querySelectorAll('.status-filter').forEach(el => {
+                el.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            updateStatusGrid(filter);
+        }
+
+        // View details
+        function viewDetails(id) {
+            const complaint = complaints.find(c => c.id === id);
+            if (complaint) {
+                document.getElementById('modalIcon').innerHTML = complaint.icon;
+                document.getElementById('modalTitle').textContent = 'Complaint Details';
+                document.getElementById('modalMessage').textContent = `Details for ID: ${id}`;
+                document.getElementById('refNumber').textContent = id;
+                document.getElementById('modalDateTime').textContent = complaint.time;
+                document.getElementById('modalAmount').textContent = complaint.details;
+                
+                document.getElementById('successModal').classList.add('active');
+            }
+        }
+
+        // Track status
+        function trackStatus(id) {
+            const complaint = complaints.find(c => c.id === id);
+            if (complaint) {
+                const trackingDetails = document.getElementById('trackingDetails');
+                trackingDetails.innerHTML = `
+                    <div>
+                        <span>Status:</span>
+                        <span style="color: ${complaint.status === 'pending' ? '#ffbb33' : complaint.status === 'processing' ? '#33b5e5' : '#7B9669'}">${complaint.status.toUpperCase()}</span>
+                    </div>
+                    <div>
+                        <span>Progress:</span>
+                        <span>${complaint.progress}% Complete</span>
+                    </div>
+                    <div>
+                        <span>Estimated Resolution:</span>
+                        <span>${getEstimatedTime(complaint)}</span>
+                    </div>
+                    <div>
+                        <span>Last Updated:</span>
+                        <span>${complaint.time}</span>
+                    </div>
+                `;
+                document.getElementById('trackingModal').classList.add('active');
+            }
+        }
+
+        // Get estimated resolution time
+        function getEstimatedTime(complaint) {
+            if (complaint.status === 'resolved') return 'Completed';
+            if (complaint.status === 'processing') return 'Within 24 hours';
+            return 'Within 48 hours';
+        }
+
+        // Show alert
+        function showAlert(message, type = 'info') {
+            const alertDiv = document.createElement('div');
+            alertDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                background: ${type === 'success' ? '#7B9669' : type === 'error' ? '#ff4444' : '#ffbb33'};
+                color: white;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                z-index: 2000;
+                animation: slideInRight 0.3s ease;
+            `;
+            alertDiv.textContent = message;
+            
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+
+        // Helper functions
+        function showError(elementId, message) {
+            document.getElementById(elementId).textContent = message;
+        }
+
+        function clearErrors() {
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.textContent = '';
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('successModal').classList.remove('active');
+        }
+
+        function closeTrackingModal() {
+            document.getElementById('trackingModal').classList.remove('active');
+        }
+
+        // Simulate status updates
+        setInterval(() => {
+            complaints.forEach(complaint => {
+                if (complaint.status === 'pending' && complaint.progress < 40) {
+                    complaint.progress += 10;
+                    if (complaint.progress >= 30) {
+                        complaint.status = 'processing';
+                    }
+                } else if (complaint.status === 'processing' && complaint.progress < 90) {
+                    complaint.progress += 15;
+                    if (complaint.progress >= 80) {
+                        complaint.status = 'resolved';
+                        complaint.progress = 100;
+                    }
+                }
+            });
+            updateStatusGrid(document.querySelector('.status-filter.active')?.textContent.toLowerCase() || 'all');
+        }, 10000); // Update every 10 seconds
+
+        // Initial update
+        updateStatusGrid('all');
+    </script>
+</body>
+</html>

@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JANSEVA - Login & PIN Generation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-bg: #B6D9E9;
+            --dark-accent: #335765;
+            --secondary-accent: #7F543D;
+            --highlight: #e5a13e;
+            --soft-accent: #FDC1B4;
+            --success: #7B9669;
+            --special: #924DBF;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary-bg) 0%, var(--white) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+         
+
+    /* Back Button Styling */
+    .back-btn {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        text-decoration: none;
+        background-color: red;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 50px;
+        font-size: 18px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        transition: 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .back-btn:hover {
+        background-color: darkred;
+        transform: scale(1.05);
+    }
+
+    .arrow {
+        margin-right: 8px;
+        font-size: 20px;
+    }
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .left-panel {
+            background: linear-gradient(135deg, var(--dark-accent) 0%, #234956 100%);
+            padding: 3rem 2rem;
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .left-panel h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .left-panel h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: var(--highlight);
+        }
+
+        .left-panel p {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: 2rem;
+        }
+
+        .feature-list li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            width: 24px;
+            height: 24px;
+            background: var(--success);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: var(--white);
+        }
+
+        .right-panel {
+            padding: 3rem 2rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 1rem;
+        }
+
+        .tab {
+            padding: 0.5rem 1.5rem;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--secondary-accent);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .tab.active {
+            color: var(--highlight);
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--highlight);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        .form-container {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .form-container.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dark-accent);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e1e1e1;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--highlight);
+            box-shadow: 0 0 0 3px rgba(229, 161, 62, 0.2);
+        }
+
+        .form-group input.error {
+            border-color: #ff4444;
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            display: block;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--highlight) 0%, #d48f30 100%);
+            color: var(--white);
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 161, 62, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .otp-sim {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .otp-sim input {
+            flex: 1;
+        }
+
+        .otp-btn {
+            padding: 0.8rem 1.5rem;
+            background: var(--success);
+            color: var(--white);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .otp-btn:hover {
+            background: #6a8558;
+            transform: scale(1.05);
+        }
+
+        .otp-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .timer {
+            text-align: center;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--secondary-accent);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .left-panel {
+                padding: 2rem;
+            }
+
+            .left-panel h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <h1>JANSEVA</h1>
+            <h2>Secure Citizen Portal</h2>
+            <p>Access all civic services with a secure PIN-based authentication system. Your gateway to smart governance.</p>
+            <ul class="feature-list">
+                <li>12-digit Aadhaar verification</li>
+                <li>4-digit secure PIN</li>
+                <li>OTP simulation for mobile</li>
+                <li>End-to-end encryption</li>
+                <li>Instant dashboard access</li>
+            </ul>
+        </div>
+        <a href="index.html" class="back-btn">
+    <span class="arrow">&#8592;</span> Back
+</a>
+
+        <div class="right-panel">
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('first-time')">First Time User</button>
+                <button class="tab" onclick="switchTab('returning')">Returning User</button>
+            </div>
+
+            <!-- First Time User Form -->
+            <div id="first-time" class="form-container active">
+                <form onsubmit="handleFirstTimeUser(event)">
+                    <div class="form-group">
+                        <label for="aadhaar">Aadhaar Number (12 digits)</label>
+                        <input type="text" id="aadhaar" maxlength="12" pattern="\d*" placeholder="Enter 12-digit Aadhaar">
+                        <span class="error-message" id="aadhaar-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fullname">Full Name</label>
+                        <input type="text" id="fullname" placeholder="Enter your full name">
+                        <span class="error-message" id="name-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mobile">Mobile Number</label>
+                        <div class="otp-sim">
+                            <input type="tel" id="mobile" maxlength="10" pattern="\d*" placeholder="10-digit mobile">
+                            <button type="button" class="otp-btn" onclick="sendOTP()" id="otpBtn">Send OTP</button>
+                        </div>
+                        <span class="error-message" id="mobile-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="otp">Enter OTP</label>
+                        <input type="text" id="otp" maxlength="6" placeholder="6-digit OTP" disabled>
+                        <span class="error-message" id="otp-error"></span>
+                        <div class="timer" id="timer"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pin">Create 4-digit PIN</label>
+                        <input type="password" id="pin" maxlength="4" pattern="\d*" placeholder="Enter 4-digit PIN">
+                        <span class="error-message" id="pin-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm-pin">Confirm PIN</label>
+                        <input type="password" id="confirm-pin" maxlength="4" pattern="\d*" placeholder="Re-enter PIN">
+                        <span class="error-message" id="confirm-pin-error"></span>
+                    </div>
+
+                    <button type="submit" class="btn">Generate PIN & Register</button>
+                </form>
+            </div>
+
+            <!-- Returning User Form -->
+            <div id="returning" class="form-container">
+                <form onsubmit="handleReturningUser(event)">
+                    <div class="form-group">
+                        <label for="return-aadhaar">Aadhaar Number</label>
+                        <input type="text" id="return-aadhaar" maxlength="12" placeholder="Enter 12-digit Aadhaar">
+                        <span class="error-message" id="return-aadhaar-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="return-pin">Enter 4-digit PIN</label>
+                        <input type="password" id="return-pin" maxlength="4" placeholder="Enter your PIN">
+                        <span class="error-message" id="return-pin-error"></span>
+                    </div>
+
+                    <button type="submit" class="btn">Login to Dashboard</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Update form containers
+            document.querySelectorAll('.form-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        let otpTimer;
+        let timeLeft = 60;
+
+        function sendOTP() {
+            const mobile = document.getElementById('mobile').value;
+            const mobileError = document.getElementById('mobile-error');
+            
+            if (!/^\d{10}$/.test(mobile)) {
+                mobileError.textContent = 'Please enter a valid 10-digit mobile number';
+                return;
+            }
+
+            mobileError.textContent = '';
+            
+            // Simulate sending OTP
+            document.getElementById('otp').disabled = false;
+            document.getElementById('otpBtn').disabled = true;
+            
+            // Start timer
+            timeLeft = 60;
+            updateTimer();
+            otpTimer = setInterval(updateTimer, 1000);
+            
+            // Simulate OTP (in real scenario, this would be sent via SMS)
+            alert(`OTP sent to ${mobile}: 123456 (For demo purposes)`);
+        }
+
+        function updateTimer() {
+            const timerDisplay = document.getElementById('timer');
+            if (timeLeft > 0) {
+                timerDisplay.textContent = `Resend OTP in ${timeLeft} seconds`;
+                timeLeft--;
+            } else {
+                clearInterval(otpTimer);
+                document.getElementById('otpBtn').disabled = false;
+                document.getElementById('otp').disabled = true;
+                timerDisplay.textContent = '';
+            }
+        }
+
+        function handleFirstTimeUser(event) {
+            event.preventDefault();
+            
+            // Reset all error messages
+            document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+            
+            // Get form values
+            const aadhaar = document.getElementById('aadhaar').value;
+            const fullname = document.getElementById('fullname').value;
+            const mobile = document.getElementById('mobile').value;
+            const otp = document.getElementById('otp').value;
+            const pin = document.getElementById('pin').value;
+            const confirmPin = document.getElementById('confirm-pin').value;
+            
+            let isValid = true;
+            
+            // Validate Aadhaar
+            if (!/^\d{12}$/.test(aadhaar)) {
+                document.getElementById('aadhaar-error').textContent = 'Aadhaar must be exactly 12 digits';
+                isValid = false;
+            }
+            
+            // Validate Name
+            if (fullname.trim().length < 3) {
+                document.getElementById('name-error').textContent = 'Please enter your full name';
+                isValid = false;
+            }
+            
+            // Validate Mobile
+            if (!/^\d{10}$/.test(mobile)) {
+                document.getElementById('mobile-error').textContent = 'Mobile number must be 10 digits';
+                isValid = false;
+            }
+            
+            // Validate OTP
+            if (otp !== '123456') {
+                document.getElementById('otp-error').textContent = 'Invalid OTP';
+                isValid = false;
+            }
+            
+            // Validate PIN
+            if (!/^\d{4}$/.test(pin)) {
+                document.getElementById('pin-error').textContent = 'PIN must be exactly 4 digits';
+                isValid = false;
+            }
+            
+            // Validate Confirm PIN
+            if (pin !== confirmPin) {
+                document.getElementById('confirm-pin-error').textContent = 'PINs do not match';
+                isValid = false;
+            }
+            
+            if (isValid) {
+                // Store user data in session storage
+                sessionStorage.setItem('userName', fullname);
+                sessionStorage.setItem('userAadhaar', aadhaar);
+                sessionStorage.setItem('userMobile', mobile);
+                
+                alert('Registration successful! Redirecting to dashboard...');
+                window.location.href = 'dashboard.html';
+            }
+        }
+
+        function handleReturningUser(event) {
+            event.preventDefault();
+            
+            const aadhaar = document.getElementById('return-aadhaar').value;
+            const pin = document.getElementById('return-pin').value;
+            
+            let isValid = true;
+            
+            if (!/^\d{12}$/.test(aadhaar)) {
+                document.getElementById('return-aadhaar-error').textContent = 'Aadhaar must be exactly 12 digits';
+                isValid = false;
+            }
+            
+            if (!/^\d{4}$/.test(pin)) {
+                document.getElementById('return-pin-error').textContent = 'PIN must be exactly 4 digits';
+                isValid = false;
+            }
+            
+            if (isValid) {
+                // Simulate login (in real scenario, this would verify against backend)
+                sessionStorage.setItem('userName', 'Demo User');
+                sessionStorage.setItem('userAadhaar', aadhaar);
+                
+                alert('Login successful! Redirecting to dashboard...');
+                window.location.href = 'dashboard.html';
+            }
+        }
+    </script>
+</body>
+</html>

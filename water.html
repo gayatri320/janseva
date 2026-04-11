@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JANSEVA - Water Services</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-bg: #B6D9E9;
+            --dark-accent: #335765;
+            --secondary-accent: #7F543D;
+            --highlight: #e5a13e;
+            --soft-accent: #FDC1B4;
+            --success: #7B9669;
+            --special: #924DBF;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary-bg) 0%, #d4e9f5 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        /* Back Button Styling */
+    .back-btn {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        text-decoration: none;
+        background-color: red;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 50px;
+        font-size: 18px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        transition: 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .back-btn:hover {
+        background-color: darkred;
+        transform: scale(1.05);
+    }
+
+    .arrow {
+        margin-right: 8px;
+        font-size: 20px;
+    }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            animation: slideDown 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '💧';
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            font-size: 8rem;
+            opacity: 0.1;
+            transform: rotate(15deg);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header h1 {
+            color: var(--dark-accent);
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header h1 i {
+            font-size: 2.5rem;
+            color: var(--highlight);
+        }
+
+        .header p {
+            color: var(--secondary-accent);
+            font-size: 1.1rem;
+        }
+
+        /* Service Grid */
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Service Card */
+        .service-card {
+            background: var(--white);
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: var(--transition);
+            animation: fadeInUp 0.6s ease;
+            border: 1px solid rgba(51, 87, 101, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #2c7da0 0%, #1e5a73 100%);
+            color: var(--white);
+            padding: 1.8rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-header.water-bill {
+            background: linear-gradient(135deg, #1e5a73 0%, #123b4d 100%);
+        }
+
+        .card-header.complaint {
+            background: linear-gradient(135deg, #e5a13e 0%, #c4842b 100%);
+        }
+
+        .card-header.new-connection {
+            background: linear-gradient(135deg, #7B9669 0%, #5f7a4f 100%);
+        }
+
+        .card-header::after {
+            content: '💧';
+            position: absolute;
+            right: -20px;
+            bottom: -20px;
+            font-size: 8rem;
+            opacity: 0.2;
+            transform: rotate(15deg);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(15deg); }
+            50% { transform: translateY(-10px) rotate(15deg); }
+        }
+
+        .card-header h2 {
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.6rem;
+            color: var(--dark-accent);
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+        }
+
+        .form-group label i {
+            margin-right: 8px;
+            color: var(--highlight);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: #f8fafc;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--highlight);
+            background: var(--white);
+            box-shadow: 0 0 0 4px rgba(229, 161, 62, 0.1);
+        }
+
+        .form-group input.error,
+        .form-group select.error,
+        .form-group textarea.error {
+            border-color: #ff4444;
+            animation: shake 0.3s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .error-message::before {
+            content: '⚠️';
+            font-size: 12px;
+        }
+
+        /* Municipality Grid */
+        .municipality-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .municipality-option {
+            padding: 0.8rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            color: var(--dark-accent);
+        }
+
+        .municipality-option:hover {
+            border-color: var(--highlight);
+            background: rgba(229, 161, 62, 0.1);
+            transform: scale(1.02);
+        }
+
+        .municipality-option.selected {
+            border-color: var(--highlight);
+            background: var(--highlight);
+            color: var(--white);
+        }
+
+        /* Billing Period */
+        .period-options {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .period-option {
+            flex: 1;
+            min-width: 100px;
+            padding: 0.8rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .period-option:hover {
+            border-color: var(--highlight);
+            background: rgba(229, 161, 62, 0.1);
+        }
+
+        .period-option.selected {
+            border-color: var(--highlight);
+            background: var(--highlight);
+            color: var(--white);
+        }
+
+        /* Payment Modes */
+        .payment-modes {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .payment-mode {
+            padding: 1rem 0.5rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .payment-mode i {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .payment-mode:hover {
+            border-color: var(--highlight);
+            background: rgba(229, 161, 62, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .payment-mode.selected {
+            border-color: var(--highlight);
+            background: var(--highlight);
+            color: var(--white);
+        }
+
+        /* Complaint Types */
+        .complaint-types {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .complaint-type {
+            padding: 1.2rem 0.5rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .complaint-type i {
+            display: block;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .complaint-type span {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .complaint-type:hover {
+            border-color: var(--highlight);
+            background: rgba(229, 161, 62, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .complaint-type.selected {
+            border-color: var(--highlight);
+            background: linear-gradient(135deg, var(--highlight) 0%, #c4842b 100%);
+            color: var(--white);
+        }
+
+        .complaint-type.no-water { background: linear-gradient(135deg, #ff6b6b10, #ff6b6b20); }
+        .complaint-type.leakage { background: linear-gradient(135deg, #4ecdc410, #4ecdc420); }
+        .complaint-type.low-pressure { background: linear-gradient(135deg, #45b7d110, #45b7d120); }
+
+        /* Property Types */
+        .property-types {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .property-type {
+            padding: 1rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .property-type i {
+            display: block;
+            font-size: 1.5rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .property-type:hover {
+            border-color: var(--success);
+            background: rgba(123, 150, 105, 0.1);
+        }
+
+        .property-type.selected {
+            border-color: var(--success);
+            background: var(--success);
+            color: var(--white);
+        }
+
+        /* File Upload */
+        .file-upload-area {
+            border: 3px dashed #cbd5e0;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background: #f8fafc;
+        }
+
+        .file-upload-area:hover {
+            border-color: var(--highlight);
+            background: rgba(229, 161, 62, 0.05);
+        }
+
+        .file-upload-area i {
+            font-size: 3rem;
+            color: var(--highlight);
+            margin-bottom: 1rem;
+        }
+
+        .file-upload-area p {
+            color: var(--dark-accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .file-upload-area small {
+            color: var(--secondary-accent);
+            font-size: 0.85rem;
+        }
+
+        .file-info {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            background: #e8f5e9;
+            border-radius: 8px;
+            color: var(--success);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 1.2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--highlight) 0%, #c4842b 100%);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(229, 161, 62, 0.4);
+        }
+
+        .btn-complaint {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
+            color: var(--white);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success) 0%, #5f7a4f 100%);
+            color: var(--white);
+        }
+
+        /* Real-time Status */
+        .status-section {
+            background: var(--white);
+            border-radius: 25px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+            animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .status-header h3 {
+            color: var(--dark-accent);
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-header h3 i {
+            color: var(--highlight);
+        }
+
+        .status-badge {
+            background: linear-gradient(135deg, var(--highlight) 0%, #c4842b 100%);
+            color: var(--white);
+            padding: 0.4rem 1.2rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            animation: pulse 2s infinite;
+        }
+
+        .status-timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .status-timeline::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--highlight), var(--success), var(--special));
+        }
+
+        .status-item {
+            position: relative;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            margin-left: 1rem;
+            animation: slideIn 0.3s ease;
+            transition: var(--transition);
+        }
+
+        .status-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 1.5rem;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            background: var(--highlight);
+            border: 3px solid var(--white);
+        }
+
+        .status-item.pending::before { background: var(--highlight); }
+        .status-item.processing::before { background: var(--special); }
+        .status-item.completed::before { background: var(--success); }
+
+        .status-title {
+            font-weight: 600;
+            color: var(--dark-accent);
+            margin-bottom: 0.3rem;
+        }
+
+        .status-desc {
+            color: var(--secondary-accent);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-time {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: 30px;
+            padding: 2.5rem;
+            max-width: 450px;
+            width: 90%;
+            animation: scaleIn 0.4s ease;
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, var(--success) 0%, #5f7a4f 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--white);
+            animation: bounceIn 0.6s ease;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .modal h3 {
+            color: var(--dark-accent);
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal p {
+            color: var(--secondary-accent);
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-details {
+            background: linear-gradient(135deg, #f8fafc 0%, #eef2f6 100%);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .modal-details div {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px dashed #cbd5e0;
+        }
+
+        .modal-details div:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .modal-details span {
+            color: var(--dark-accent);
+            font-weight: 500;
+        }
+
+        .modal-details span:last-child {
+            color: var(--highlight);
+            font-weight: 600;
+        }
+
+        .modal-close {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--dark-accent) 0%, #1a3a45 100%);
+            color: var(--white);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(51, 87, 101, 0.4);
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: var(--white);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .service-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .complaint-types,
+            .property-types,
+            .payment-modes {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>
+                <i>💧</i>
+                Water Services
+            </h1>
+            <p>Manage your water bills, report supply issues, and apply for new connections</p>
+        </div>
+         <a href="index.html" class="back-btn">
+    <span class="arrow">&#8592;</span> Back
+</a>
+        <!-- Service Grid -->
+        <div class="service-grid">
+            <!-- Water Bill Payment Card -->
+            <div class="service-card">
+                <div class="card-header water-bill">
+                    <h2>Water Bill Payment</h2>
+                    <p>Pay your water bills securely</p>
+                </div>
+                <div class="card-body">
+                    <form id="billPaymentForm" onsubmit="return false;">
+                        <div class="form-group">
+                            <label>
+                                <i>🔢</i>
+                                Connection ID
+                            </label>
+                            <input type="text" id="connectionId" maxlength="10" placeholder="Enter 10-digit connection ID">
+                            <span class="error-message" id="connectionIdError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i>🏛️</i>
+                                Municipality / Water Board
+                            </label>
+                            <select id="municipality">
+                                <option value="">Select Municipality / Water Board</option>
+                                <option value="delhi">Delhi Jal Board</option>
+                                <option value="mumbai">Brihanmumbai Municipal Corporation</option>
+                                <option value="chennai">Chennai Metropolitan Water Supply</option>
+                                <option value="kolkata">Kolkata Municipal Corporation</option>
+                                <option value="bangalore">Bangalore Water Supply & Sewerage Board</option>
+                                <option value="hyderabad">Hyderabad Metropolitan Water Supply</option>
+                                <option value="ahmedabad">Ahmedabad Municipal Corporation</option>
+                                <option value="pune">Pune Municipal Corporation</option>
+                                <option value="lucknow">Lucknow Municipal Corporation</option>
+                                <option value="jaipur">Jaipur Municipal Corporation</option>
+                            </select>
+                            <span class="error-message" id="municipalityError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i>📅</i>
+                                Billing Period
+                            </label>
+                            <div class="period-options">
+                                <div class="period-option" onclick="selectPeriod('monthly', this)">Monthly</div>
+                                <div class="period-option" onclick="selectPeriod('quarterly', this)">Quarterly</div>
+                                <div class="period-option" onclick="selectPeriod('yearly', this)">Yearly</div>
+                            </div>
+                            <input type="hidden" id="billingPeriod">
+                            <span class="error-message" id="periodError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i>💰</i>
+                                Amount (₹)
+                            </label>
+                            <input type="number" id="billAmount" min="1" step="0.01" placeholder="Enter amount">
+                            <span class="error-message" id="billAmountError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i>💳</i>
+                                Payment Mode
+                            </label>
+                            <div class="payment-modes">
+                                <div class="payment-mode" onclick="selectPaymentMode('upi', this)">
+                                    <i>📱</i>
+                                    UPI
+                                </div>
+                                <div class="payment-mode" onclick="selectPaymentMode('card', this)">
+                                    <i>💳</i>
+                                    Card
+                                </div>
+                                <div class="payment-mode" onclick="selectPaymentMode('netbanking', this)">
+                                    <i>🏦</i>
+                                    Net Banking
+                                </div>
+                            </div>
+                            <input type="hidden" id="paymentMode">
+                            <span class="error-message" id="paymentModeError"></span>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="payWaterBill()">
+                            <span class="btn-text">Pay Water Bill</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Water Supply Complaint Card -->
+            <div class="service-card">
+                <div class="card-header complaint">
+                    <h2>Water Supply Complaint</h2>
+                    <p>Report water supply issues</p>
+                </div>
+                <div class="card-body">
+                    <form id="complaintForm" onsubmit="return false;">
+                        <div class="form-group">
+                            <label>
+                                <i>⚠️</i>
+                                Complaint Type
+                            </label>
+                            <div class="complaint-types">
+                                <div class="complaint-type no-water" onclick="selectComplaintType('no-water', this)">
+                                    <i>🚫</i>
+                                    <span>No Water</span>
+                                </div>
+                                <div class="complaint-type leakage" onclick="selectComplaintType('leakage', this)">
+                                    <i>💧</i>
+                                    <span>Leakage</span>
+                                </div>
+                                <div class="complaint-type low-pressure" onclick="selectComplaintType('low-pressure', this)">
+                                    <i>📉</i>
+                                    <span>Low Pressure</span>
+                                </div>
+                            </div>
+                            <input type="hidden" id="complaintType">
+                            <span class="error-message" id="complaintTypeError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i>📍</i>
+                                Area / Locality
+                            </label>
+                            <input type="text" id="complaintArea" placeholder="Enter your area/locality">
+                            <span class="error-message" id="complaintAreaError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i>📝</i>
+                                Description
+                            </label>
+                            <textarea id="complaintDesc" rows="4" placeholder="Describe the issue in detail..."></textarea>
+                            <span class="error-message" id="complaintDescError"></span>
+                        </div>
+
+                        <button class="btn btn-complaint" onclick="registerWaterComplaint()">
+                            Register Complaint
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- New Water Connection Card -->
+            <div class="service-card">
+                <div class="card-header new-connection">
+                    <h2>New Water Connection</h2>
+                    <p>Apply for new water connection</p>
+                </div>
+                <div class="card-body">
+                    <form id="newConnectionForm" onsubmit="return false;">
+                        <div class="form-group">
+                            <label>
+                                <i>👤</i>
+                                Applicant Name
+                            </label>
+                            <input type="text" id="applicantName" placeholder="Enter full name">
+                            <span class="error-message" id="applicantNameError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i>🏠</i>
+                                Address
+                            </label>
+                            <textarea id="applicantAddress" rows="3" placeholder="Enter complete address with pincode"></textarea>
+                            <span class="error-message" id="applicantAddressError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i>🏢</i>
+                                Property Type
+                            </label>
+                            <div class="property-types">
+                                <div class="property-type" onclick="selectPropertyType('residential', this)">
+                                    <i>🏠</i>
+                                    <span>Residential</span>
+                                </div>
+                                <div class="property-type" onclick="selectPropertyType('commercial', this)">
+                                    <i>🏢</i>
+                                    <span>Commercial</span>
+                                </div>
+                                <div class="property-type" onclick="selectPropertyType('industrial', this)">
+                                    <i>🏭</i>
+                                    <span>Industrial</span>
+                                </div>
+                            </div>
+                            <input type="hidden" id="propertyType">
+                            <span class="error-message" id="propertyTypeError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i>📎</i>
+                                ID Proof Upload
+                            </label>
+                            <div class="file-upload-area" onclick="document.getElementById('idProof').click()">
+                                <i>📤</i>
+                                <p>Click to upload Aadhaar / Voter ID / Passport</p>
+                                <small>Supported formats: PDF, JPG, PNG (Max 5MB)</small>
+                                <input type="file" id="idProof" accept=".pdf,.jpg,.jpeg,.png" style="display: none;" onchange="handleFileUpload(this)">
+                            </div>
+                            <div id="fileInfo" class="file-info" style="display: none;">
+                                <span id="fileName"></span>
+                                <span onclick="removeFile()" style="cursor: pointer; color: #ff4444;">✕</span>
+                            </div>
+                            <span class="error-message" id="fileError"></span>
+                        </div>
+
+                        <button class="btn btn-success" onclick="submitNewWaterConnection()">
+                            Submit Application
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Real-time Status Section -->
+        <div class="status-section">
+            <div class="status-header">
+                <h3>
+                    <i>📊</i>
+                    Real-Time Status Updates
+                </h3>
+                <span class="status-badge" id="statusCount">3 Active</span>
+            </div>
+            <div class="status-timeline" id="statusTimeline">
+                <div class="status-item completed">
+                    <div class="status-title">Water Bill Payment - Connection: WB12345678</div>
+                    <div class="status-desc">Payment of ₹1,250.50 completed successfully</div>
+                    <div class="status-time">⏱️ 2 hours ago</div>
+                </div>
+                <div class="status-item processing">
+                    <div class="status-title">Water Supply Complaint - Area: Andheri East</div>
+                    <div class="status-desc">Complaint #CMP7890 - Assigned to maintenance team</div>
+                    <div class="status-time">⏱️ 5 hours ago</div>
+                </div>
+                <div class="status-item pending">
+                    <div class="status-title">New Water Connection - Applicant: Ramesh Kumar</div>
+                    <div class="status-desc">Application #APP456 - Under verification</div>
+                    <div class="status-time">⏱️ 1 day ago</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon" id="modalIcon">✓</div>
+            <h3 id="modalTitle">Success!</h3>
+            <p id="modalMessage">Your request has been processed successfully.</p>
+            <div class="modal-details" id="modalDetails">
+                <div>
+                    <span>Reference ID:</span>
+                    <span id="refId">REF123456</span>
+                </div>
+                <div>
+                    <span>Date & Time:</span>
+                    <span id="modalDateTime">15 Feb 2024, 10:30 AM</span>
+                </div>
+                <div>
+                    <span>Amount:</span>
+                    <span id="modalAmount">₹1,250.50</span>
+                </div>
+            </div>
+            <button class="modal-close" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // State management
+        let selectedPaymentMode = '';
+        let selectedPeriod = '';
+        let selectedComplaintType = '';
+        let selectedPropertyType = '';
+        let uploadedFile = null;
+
+        // Select payment mode
+        function selectPaymentMode(mode, element) {
+            document.querySelectorAll('.payment-mode').forEach(el => {
+                el.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            document.getElementById('paymentMode').value = mode;
+            selectedPaymentMode = mode;
+            document.getElementById('paymentModeError').textContent = '';
+        }
+
+        // Select billing period
+        function selectPeriod(period, element) {
+            document.querySelectorAll('.period-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            document.getElementById('billingPeriod').value = period;
+            selectedPeriod = period;
+            document.getElementById('periodError').textContent = '';
+        }
+
+        // Select complaint type
+        function selectComplaintType(type, element) {
+            document.querySelectorAll('.complaint-type').forEach(el => {
+                el.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            document.getElementById('complaintType').value = type;
+            selectedComplaintType = type;
+            document.getElementById('complaintTypeError').textContent = '';
+        }
+
+        // Select property type
+        function selectPropertyType(type, element) {
+            document.querySelectorAll('.property-type').forEach(el => {
+                el.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            document.getElementById('propertyType').value = type;
+            selectedPropertyType = type;
+            document.getElementById('propertyTypeError').textContent = '';
+        }
+
+        // Handle file upload
+        function handleFileUpload(input) {
+            const file = input.files[0];
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    document.getElementById('fileError').textContent = 'File size should be less than 5MB';
+                    return;
+                }
+                
+                uploadedFile = file;
+                document.getElementById('fileName').textContent = file.name;
+                document.getElementById('fileInfo').style.display = 'flex';
+                document.getElementById('fileError').textContent = '';
+            }
+        }
+
+        // Remove file
+        function removeFile() {
+            uploadedFile = null;
+            document.getElementById('idProof').value = '';
+            document.getElementById('fileInfo').style.display = 'none';
+        }
+
+        // Pay water bill
+        function payWaterBill() {
+            clearErrors();
+            
+            const connectionId = document.getElementById('connectionId').value;
+            const municipality = document.getElementById('municipality').value;
+            const amount = document.getElementById('billAmount').value;
+            
+            let isValid = true;
+            
+            // Validate connection ID
+            if (!connectionId) {
+                showError('connectionIdError', 'Connection ID is required');
+                isValid = false;
+            } else if (!/^\d{10}$/.test(connectionId)) {
+                showError('connectionIdError', 'Connection ID must be 10 digits');
+                isValid = false;
+            }
+            
+            // Validate municipality
+            if (!municipality) {
+                showError('municipalityError', 'Please select municipality');
+                isValid = false;
+            }
+            
+            // Validate billing period
+            if (!selectedPeriod) {
+                showError('periodError', 'Please select billing period');
+                isValid = false;
+            }
+            
+            // Validate amount
+            if (!amount) {
+                showError('billAmountError', 'Amount is required');
+                isValid = false;
+            } else if (parseFloat(amount) <= 0) {
+                showError('billAmountError', 'Amount must be greater than 0');
+                isValid = false;
+            }
+            
+            // Validate payment mode
+            if (!selectedPaymentMode) {
+                showError('paymentModeError', 'Please select payment mode');
+                isValid = false;
+            }
+            
+            if (isValid) {
+                // Show processing
+                const btn = document.querySelector('#billPaymentForm .btn-primary');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<span class="loading"></span> Processing...';
+                btn.disabled = true;
+                
+                // Simulate payment processing
+                setTimeout(() => {
+                    const refId = 'WTR' + Math.floor(Math.random() * 1000000);
+                    const date = new Date();
+                    
+                    // Update modal
+                    document.getElementById('modalIcon').innerHTML = '💧';
+                    document.getElementById('modalTitle').textContent = 'Payment Successful!';
+                    document.getElementById('modalMessage').textContent = 'Your water bill has been paid successfully.';
+                    document.getElementById('refId').textContent = refId;
+                    document.getElementById('modalDateTime').textContent = date.toLocaleString();
+                    document.getElementById('modalAmount').textContent = '₹' + parseFloat(amount).toFixed(2);
+                    
+                    // Show modal
+                    document.getElementById('successModal').classList.add('active');
+                    
+                    // Add status update
+                    addStatusUpdate({
+                        type: 'completed',
+                        title: `Water Bill Payment - Connection: ${connectionId}`,
+                        desc: `Payment of ₹${amount} completed successfully`,
+                        time: 'Just now'
+                    });
+                    
+                    // Reset form
+                    document.getElementById('billPaymentForm').reset();
+                    document.querySelectorAll('.payment-mode, .period-option').forEach(el => {
+                        el.classList.remove('selected');
+                    });
+                    selectedPaymentMode = '';
+                    selectedPeriod = '';
+                    
+                    // Reset button
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }, 2000);
+            }
+        }
+
+        // Register water complaint
+        function registerWaterComplaint() {
+            clearErrors();
+            
+            const area = document.getElementById('complaintArea').value;
+            const desc = document.getElementById('complaintDesc').value;
+            
+            let isValid = true;
+            
+            if (!selectedComplaintType) {
+                showError('complaintTypeError', 'Please select complaint type');
+                isValid = false;
+            }
+            
+            if (!area) {
+                showError('complaintAreaError', 'Area is required');
+                isValid = false;
+            }
+            
+            if (!desc) {
+                showError('complaintDescError', 'Please provide description');
+                isValid = false;
+            }
+            
+            if (isValid) {
+                const complaintId = 'CMP' + Math.floor(Math.random() * 10000);
+                const typeNames = {
+                    'no-water': 'No Water Supply',
+                    'leakage': 'Water Leakage',
+                    'low-pressure': 'Low Water Pressure'
+                };
+                
+                document.getElementById('modalIcon').innerHTML = '📢';
+                document.getElementById('modalTitle').textContent = 'Complaint Registered!';
+                document.getElementById('modalMessage').textContent = `Your complaint has been registered successfully.`;
+                document.getElementById('refId').textContent = complaintId;
+                document.getElementById('modalDateTime').textContent = new Date().toLocaleString();
+                document.getElementById('modalAmount').textContent = typeNames[selectedComplaintType];
+                
+                document.getElementById('successModal').classList.add('active');
+                
+                addStatusUpdate({
+                    type: 'pending',
+                    title: `Water Supply Complaint - Area: ${area}`,
+                    desc: `Complaint #${complaintId} - ${typeNames[selectedComplaintType]}`,
+                    time: 'Just now'
+                });
+                
+                document.getElementById('complaintForm').reset();
+                document.querySelectorAll('.complaint-type').forEach(el => el.classList.remove('selected'));
+                selectedComplaintType = '';
+            }
+        }
+
+        // Submit new water connection
+        function submitNewWaterConnection() {
+            clearErrors();
+            
+            const name = document.getElementById('applicantName').value;
+            const address = document.getElementById('applicantAddress').value;
+            
+            let isValid = true;
+            
+            if (!name) {
+                showError('applicantNameError', 'Name is required');
+                isValid = false;
+            }
+            
+            if (!address) {
+                showError('applicantAddressError', 'Address is required');
+                isValid = false;
+            }
+            
+            if (!selectedPropertyType) {
+                showError('propertyTypeError', 'Please select property type');
+                isValid = false;
+            }
+            
+            if (!uploadedFile) {
+                showError('fileError', 'Please upload ID proof');
+                isValid = false;
+            }
+            
+            if (isValid) {
+                const applicationId = 'APP' + Math.floor(Math.random() * 10000);
+                
+                document.getElementById('modalIcon').innerHTML = '📋';
+                document.getElementById('modalTitle').textContent = 'Application Submitted!';
+                document.getElementById('modalMessage').textContent = 'Your water connection application has been submitted.';
+                document.getElementById('refId').textContent = applicationId;
+                document.getElementById('modalDateTime').textContent = new Date().toLocaleString();
+                document.getElementById('modalAmount').textContent = selectedPropertyType.charAt(0).toUpperCase() + selectedPropertyType.slice(1);
+                
+                document.getElementById('successModal').classList.add('active');
+                
+                addStatusUpdate({
+                    type: 'processing',
+                    title: `New Water Connection - Applicant: ${name}`,
+                    desc: `Application #${applicationId} - Under verification`,
+                    time: 'Just now'
+                });
+                
+                document.getElementById('newConnectionForm').reset();
+                document.querySelectorAll('.property-type').forEach(el => el.classList.remove('selected'));
+                removeFile();
+                selectedPropertyType = '';
+            }
+        }
+
+        // Add status update
+        function addStatusUpdate(update) {
+            const timeline = document.getElementById('statusTimeline');
+            const statusCount = document.getElementById('statusCount');
+            
+            const statusItem = document.createElement('div');
+            statusItem.className = `status-item ${update.type}`;
+            statusItem.innerHTML = `
+                <div class="status-title">${update.title}</div>
+                <div class="status-desc">${update.desc}</div>
+                <div class="status-time">⏱️ ${update.time}</div>
+            `;
+            
+            timeline.insertBefore(statusItem, timeline.firstChild);
+            
+            const activeCount = document.querySelectorAll('.status-item').length;
+            statusCount.textContent = activeCount + ' Active';
+            
+            if (timeline.children.length > 6) {
+                timeline.removeChild(timeline.lastChild);
+            }
+        }
+
+        // Helper functions
+        function showError(elementId, message) {
+            document.getElementById(elementId).textContent = message;
+        }
+
+        function clearErrors() {
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.textContent = '';
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('successModal').classList.remove('active');
+        }
+
+        // Simulate periodic updates
+        setInterval(() => {
+            const updates = [
+                {
+                    type: 'processing',
+                    title: 'Water Quality Test - Area: Civil Lines',
+                    desc: 'Water quality testing in progress',
+                    time: 'Just now'
+                },
+                {
+                    type: 'completed',
+                    title: 'Pipeline Maintenance - Sector 22',
+                    desc: 'Maintenance work completed',
+                    time: '2 mins ago'
+                }
+            ];
+            
+            const randomUpdate = updates[Math.floor(Math.random() * updates.length)];
+            addStatusUpdate(randomUpdate);
+        }, 45000); // New update every 45 seconds
+    </script>
+</body>
+</html>

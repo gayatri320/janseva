@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JANSEVA - Smart Civic Self-Service Kiosk</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-bg: #B6D9E9;
+            --dark-accent: #335765;
+            --secondary-accent: #7F543D;
+            --highlight: #e5a13e;
+            --soft-accent: #FDC1B4;
+            --success: #7B9669;
+            --special: #924DBF;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            color: var(--dark-accent);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background-color: var(--white);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--dark-accent);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--highlight);
+            transition: var(--transition);
+        }
+
+        .logo:hover::after {
+            width: 100%;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-accent);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--highlight);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::before {
+            width: 80%;
+        }
+
+        .nav-links a:hover {
+            background-color: rgba(181, 217, 233, 0.3);
+            transform: translateY(-2px);
+        }
+       
+       /* Dropdown Container */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Button */
+.dropbtn {
+    background-color: #e5a13e;
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.dropbtn:hover {
+    background-color: #7F543D;
+}
+
+/* Dropdown Content */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 110%;
+    left: 0;
+    background-color: #ffffff;
+    min-width: 220px;
+    border-radius: 6px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    z-index: 9999;   /* IMPORTANT FIX */
+}
+
+/* Links */
+.dropdown-content a {
+    display: block;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: #335765;
+}
+
+.dropdown-content a:hover {
+    background-color: #FDC1B4;
+}
+
+/* Show class */
+.dropdown-content.show {
+    display: block;
+}
+
+/* Container */
+.language-container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+/* Select styling */
+select {
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: none;
+    background-color: #e5a13e;
+    color: white;
+    cursor: pointer;
+}
+
+select:focus {
+    outline: none;
+}
+
+
+/* IMPORTANT PART */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+        .login-btn {
+            background-color: var(--highlight);
+            color: var(--white) !important;
+            border-radius: 25px !important;
+            padding: 0.5rem 1.5rem !important;
+        }
+
+        .login-btn:hover {
+            background-color: var(--secondary-accent) !important;
+            transform: scale(1.05) !important;
+        }
+
+        /* Mobile Menu */
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-bg) 0%, var(--white) 100%);
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+            margin-top: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: var(--soft-accent);
+            border-radius: 50%;
+            top: -150px;
+            right: -150px;
+            opacity: 0.3;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: var(--success);
+            border-radius: 50%;
+            bottom: -100px;
+            left: -100px;
+            opacity: 0.2;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(10px, -10px) rotate(5deg); }
+            50% { transform: translate(0, -20px) rotate(0deg); }
+            75% { transform: translate(-10px, -10px) rotate(-5deg); }
+        }
+
+        .hero-content {
+            flex: 1;
+            animation: fadeInUp 1s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark-accent);
+            line-height: 1.2;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: var(--secondary-accent);
+            max-width: 600px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: var(--highlight);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(229, 161, 62, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-accent);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(127, 84, 61, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--dark-accent);
+            border: 2px solid var(--dark-accent);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--dark-accent);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        .hero-image {
+            flex: 1;
+            text-align: center;
+            animation: fadeInRight 1s ease;
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15));
+        }
+
+        /* About Section */
+        .about {
+            padding: 5rem 5%;
+            background-color: var(--white);
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--dark-accent);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--highlight), transparent);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(51, 87, 101, 0.1);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-bg) 0%, transparent 100%);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .feature-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, var(--primary-bg), var(--soft-accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--dark-accent);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: rotate(360deg) scale(1.1);
+        }
+
+        .feature-card h3 {
+            color: var(--dark-accent);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .feature-card p {
+            color: var(--secondary-accent);
+            font-size: 0.95rem;
+        }
+
+        /* Workflow Section */
+        .workflow {
+            padding: 5rem 5%;
+            background: linear-gradient(135deg, var(--primary-bg) 0%, #e0f0f7 100%);
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            perspective: 1000px;
+        }
+
+        .step-card {
+            background: var(--white);
+            padding: 2rem 1.5rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .step-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--highlight);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+            transition: var(--transition);
+        }
+
+        .step-card:hover .step-number {
+            transform: scale(1.2);
+            background: var(--special);
+        }
+
+        .step-card h4 {
+            color: var(--dark-accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .step-card p {
+            color: var(--secondary-accent);
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-accent);
+            color: var(--white);
+            padding: 3rem 5% 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--highlight);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: var(--white);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-section a:hover {
+            color: var(--highlight);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 2rem;
+            }
+
+            .hero-content p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--white);
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: var(--shadow);
+                animation: slideDown 0.3s ease;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                text-align: center;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+
+            .btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .feature-card {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--primary-bg);
+            border-radius: 50%;
+            border-top-color: var(--highlight);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">JANSEVA</div>
+        <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+        <ul class="nav-links">
+            <li><a href="#home" onclick="closeMenu()">Home</a></li>
+            <li><a href="#about" onclick="closeMenu()">Features</a></li>
+            <li><a href="#services" onclick="closeMenu()">Services</a></li>
+           <li><a href="certificate.html">certificate</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="login.html" class="login-btn" onclick="closeMenu()">Login</a></li>
+       </ul>
+        <div class="language-container">
+    <select id="languageSelect">
+        <option value="">Select Language ▼</option>
+        <option value="en">English</option>
+        <option value="hi">हिंदी</option>
+        <option value="mr">मराठी</option>
+    </select>
+</div>
+       
+    <div class="dropdown">
+        <button class="dropbtn" id="serviceBtn">Select Service</button>
+        <div id="serviceDropdown" class="dropdown-content">
+              <a href="water.html">Water Services</a>
+            <a href="gas.html">Gas Services</a>
+            <a href="electricity.html">Electricity Services</a>
+            <a href="municipal.html">Municipal Services</a>
+        </div>
+    </div>
+</div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Smart Civic Self-Service Kiosk</h1>
+            <p>Access electricity, water, gas, municipal services, and certificate applications seamlessly at your fingertips. Your one-stop solution for all civic needs.</p>
+            <div class="hero-buttons">
+                <a href="login.html" class="btn btn-primary">Access Services</a>
+                <a href="#about" class="btn btn-secondary">Learn More</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="200" cy="200" r="150" fill="url(#grad1)" opacity="0.2"/>
+                <rect x="120" y="120" width="160" height="160" rx="20" fill="var(--white)" stroke="var(--dark-accent)" stroke-width="4"/>
+                <circle cx="200" cy="180" r="30" fill="var(--highlight)"/>
+                <rect x="170" y="220" width="60" height="40" rx="5" fill="var(--success)"/>
+                <path d="M150 280 L250 280" stroke="var(--dark-accent)" stroke-width="4" stroke-dasharray="5 5"/>
+                <defs>
+                    <linearGradient id="grad1" x1="50" y1="50" x2="350" y2="350" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="var(--primary-bg)"/>
+                        <stop offset="1" stop-color="var(--soft-accent)"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+    </section>
+
+    <!-- About JANSEVA Section -->
+    <section id="about" class="about">
+        <h2 class="section-title">About JANSEVA</h2>
+        <div class="features-grid">
+            <div class="feature-card" data-aos="fade-up">
+                <div class="feature-icon">🚶</div>
+                <h3>Reduces Queues</h3>
+                <p>Smart queue management system eliminates long waiting lines at government offices</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-icon">🔐</div>
+                <h3>Secure PIN-based Login</h3>
+                <p>4-digit PIN authentication ensures your data remains safe and secure</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-icon">📱</div>
+                <h3>Aadhaar-based Slot Booking</h3>
+                <p>Book appointments easily using your Aadhaar number for various services</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature-icon">📶</div>
+                <h3>Offline Functionality</h3>
+                <p>Access essential services even without internet connectivity</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="feature-icon">🗣️</div>
+                <h3>Voice Guidance</h3>
+                <p>Multilingual voice assistance for elderly and visually impaired users</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+                <div class="feature-icon">📄</div>
+                <h3>Paperless Document Handling</h3>
+                <p>Digital document management reduces paper usage and storage needs</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="600">
+                <div class="feature-icon">👁️</div>
+                <h3>Transparency</h3>
+                <p>Real-time tracking of applications and complaints for complete transparency</p>
+            </div>
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="700">
+                <div class="feature-icon">🛡️</div>
+                <h3>Misuse Prevention</h3>
+                <p>Advanced security measures prevent unauthorized access and misuse</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workflow Section -->
+    <section id="services" class="workflow">
+        <h2 class="section-title">How JANSEVA Works</h2>
+        <div class="steps-container">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h4>Language Selection</h4>
+                <p>Choose your preferred language from multiple options</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h4>First Time User Check</h4>
+                <p>Verify if you're a new or returning user</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h4>KYC Registration</h4>
+                <p>Aadhaar-based registration & PIN setup</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <h4>PIN Login</h4>
+                <p>Secure 4-digit PIN authentication</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">5</div>
+                <h4>Service Account Linking</h4>
+                <p>Link your existing service accounts</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">6</div>
+                <h4>Service Selection</h4>
+                <p>Choose from available civic services</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">7</div>
+                <h4>Service Execution</h4>
+                <p>Complete your requested service</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">8</div>
+                <h4>Backend Processing</h4>
+                <p>Automated backend verification</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">9</div>
+                <h4>Real-Time Updates</h4>
+                <p>Track your request status live</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">10</div>
+                <h4>Confirmation & Logout</h4>
+                <p>Get confirmation and securely logout</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>JANSEVA</h3>
+                <p>Smart Civic Self-Service Kiosk<br>Making governance accessible to all</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <ul>
+                    <li>📞 Toll Free: 1800-123-4567</li>
+                    <li>✉️ Brainianc@janseva.gov.in</li>
+                    <li>🏢 Nashik, India</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#">Terms of Use</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Disclaimer</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 JANSEVA. A Government of India Initiative</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMenu() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        }
+
+        function closeMenu() {
+            document.querySelector('.nav-links').classList.remove('active');
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar background change on scroll
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+                navbar.style.backdropFilter = 'blur(10px)';
+            } else {
+                navbar.style.backgroundColor = 'var(--white)';
+                navbar.style.backdropFilter = 'none';
+            }
+        });
+
+        // Animate elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card, .step-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Loading animation simulation
+        window.addEventListener('load', () => {
+            console.log('JANSEVA Kiosk loaded successfully');
+        });
+    </script>
+
+<script>
+// Get elements
+const button = document.getElementById("serviceBtn");
+const menu = document.getElementById("dropdownMenu");
+
+// Toggle dropdown on click
+button.addEventListener("click", function(event) {
+    event.stopPropagation();   // prevent window click
+    menu.classList.toggle("show");
+});
+
+// Close dropdown if clicking outside
+window.addEventListener("click", function(event) {
+    if (!menu.contains(event.target)) {
+        menu.classList.remove("show");
+    }
+});
+
+
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+    const button = document.getElementById("serviceBtn");
+    const dropdown = document.getElementById("serviceDropdown");
+
+    button.addEventListener("click", function (e) {
+        e.stopPropagation();
+        dropdown.classList.toggle("show");
+    });
+
+    document.addEventListener("click", function (e) {
+        if (!dropdown.contains(e.target) && e.target !== button) {
+            dropdown.classList.remove("show");
+        }
+    });
+
+});
+
+document.getElementById("languageSelect").addEventListener("change", function() {
+    let selectedLang = this.options[this.selectedIndex].text;
+    alert("You selected: " + selectedLang);
+});
+</script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JANSEVA - Gas Services</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-bg: #B6D9E9;
+            --dark-accent: #335765;
+            --secondary-accent: #7F543D;
+            --highlight: #e5a13e;
+            --soft-accent: #FDC1B4;
+            --success: #7B9669;
+            --special: #924DBF;
+            --danger: #ff4444;
+            --warning: #ffbb33;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f0e6 0%, var(--primary-bg) 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        /* Back Button Styling */
+    .back-btn {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        text-decoration: none;
+        background-color: red;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 50px;
+        font-size: 18px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        transition: 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .back-btn:hover {
+        background-color: darkred;
+        transform: scale(1.05);
+    }
+
+    .arrow {
+        margin-right: 8px;
+        font-size: 20px;
+    }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--dark-accent) 0%, #1a3a45 100%);
+            padding: 2.5rem;
+            border-radius: 30px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 2.5rem;
+            animation: slideDown 0.6s ease;
+            position: relative;
+            overflow: hidden;
+            color: var(--white);
+        }
+
+        .header::before {
+            content: '🔥';
+            position: absolute;
+            right: 30px;
+            bottom: 10px;
+            font-size: 8rem;
+            opacity: 0.1;
+            transform: rotate(10deg);
+            animation: flicker 3s ease-in-out infinite;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 0.1; transform: rotate(10deg) scale(1); }
+            50% { opacity: 0.15; transform: rotate(12deg) scale(1.05); }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header h1 i {
+            font-size: 3rem;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Service Grid */
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Service Card */
+        .service-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: var(--transition);
+            animation: fadeInUp 0.6s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .service-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header {
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            color: var(--white);
+        }
+
+        .card-header.lpg-booking {
+            background: linear-gradient(135deg, #FF8008 0%, #FFA07A 100%);
+        }
+
+        .card-header.bill-payment {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .card-header.leakage-complaint {
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+        }
+
+        .card-header::after {
+            content: '🔥';
+            position: absolute;
+            right: -10px;
+            bottom: -10px;
+            font-size: 6rem;
+            opacity: 0.2;
+            transform: rotate(15deg);
+            animation: floatGas 4s ease-in-out infinite;
+        }
+
+        @keyframes floatGas {
+            0%, 100% { transform: translateY(0) rotate(15deg); }
+            50% { transform: translateY(-10px) rotate(20deg); }
+        }
+
+        .card-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.8rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.7rem;
+            color: var(--dark-accent);
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group label i {
+            margin-right: 8px;
+            color: var(--highlight);
+            width: 20px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: #f8f9fa;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--highlight);
+            background: var(--white);
+            box-shadow: 0 0 0 4px rgba(229, 161, 62, 0.15);
+        }
+
+        .form-group input.error,
+        .form-group select.error {
+            border-color: var(--danger);
+            animation: shake 0.3s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-10px); }
+            40% { transform: translateX(10px); }
+            60% { transform: translateX(-5px); }
+            80% { transform: translateX(5px); }
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .error-message::before {
+            content: '⚠️';
+            font-size: 12px;
+        }
+
+        /* Gas Agency Dropdown */
+        .agency-select {
+            background: #f8f9fa;
+            cursor: pointer;
+        }
+
+        .agency-select option {
+            padding: 10px;
+        }
+
+        /* Address Textarea */
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Urgency Levels */
+        .urgency-levels {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .urgency-level {
+            padding: 1.2rem 0.5rem;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .urgency-level i {
+            display: block;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .urgency-level span {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .urgency-level small {
+            display: block;
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+            opacity: 0.8;
+        }
+
+        .urgency-level.low {
+            background: linear-gradient(135deg, #00b09b10, #96c93d10);
+        }
+
+        .urgency-level.low:hover {
+            border-color: #00b09b;
+            background: rgba(0, 176, 155, 0.1);
+        }
+
+        .urgency-level.low.selected {
+            border-color: #00b09b;
+            background: linear-gradient(135deg, #00b09b, #96c93d);
+            color: var(--white);
+        }
+
+        .urgency-level.medium {
+            background: linear-gradient(135deg, #ffa75110, #ffe25910);
+        }
+
+        .urgency-level.medium:hover {
+            border-color: #ffa751;
+            background: rgba(255, 167, 81, 0.1);
+        }
+
+        .urgency-level.medium.selected {
+            border-color: #ffa751;
+            background: linear-gradient(135deg, #ffa751, #ffe259);
+            color: var(--white);
+        }
+
+        .urgency-level.high {
+            background: linear-gradient(135deg, #ff416c10, #ff4b2b10);
+        }
+
+        .urgency-level.high:hover {
+            border-color: #ff416c;
+            background: rgba(255, 65, 108, 0.1);
+        }
+
+        .urgency-level.high.selected {
+            border-color: #ff416c;
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            color: var(--white);
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #FF8008, #FFA07A);
+            color: var(--white);
+            box-shadow: 0 5px 15px rgba(255, 128, 8, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 128, 8, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: var(--white);
+            box-shadow: 0 5px 15px rgba(17, 153, 142, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(17, 153, 142, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            color: var(--white);
+            box-shadow: 0 5px 15px rgba(255, 65, 108, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 65, 108, 0.4);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        /* Booking Status */
+        .booking-status {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 20px;
+            display: none;
+        }
+
+        .booking-status.active {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .status-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 1.5rem;
+        }
+
+        .status-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--highlight) 0%, #c4842b 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--white);
+        }
+
+        .status-info {
+            flex: 1;
+        }
+
+        .status-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark-accent);
+            margin-bottom: 0.3rem;
+        }
+
+        .status-ref {
+            color: var(--secondary-accent);
+            font-size: 0.9rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #dee2e6;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--highlight), #FF8008);
+            border-radius: 10px;
+            animation: progress 2s ease-in-out infinite;
+        }
+
+        @keyframes progress {
+            0% { width: 0%; }
+            50% { width: 100%; }
+            100% { width: 0%; }
+        }
+
+        .status-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .status-detail-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--white);
+            border-radius: 12px;
+        }
+
+        .detail-label {
+            font-size: 0.85rem;
+            color: var(--secondary-accent);
+            margin-bottom: 0.3rem;
+        }
+
+        .detail-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark-accent);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: 40px;
+            padding: 3rem;
+            max-width: 500px;
+            width: 90%;
+            animation: scaleIn 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 128, 8, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+            background: linear-gradient(135deg, var(--highlight) 0%, #FF8008 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: var(--white);
+            animation: bounceIn 0.8s ease;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .modal h3 {
+            color: var(--dark-accent);
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .modal p {
+            color: var(--secondary-accent);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .modal-details {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .modal-details div {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px dashed #adb5bd;
+        }
+
+        .modal-details div:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .modal-details span {
+            color: var(--dark-accent);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .modal-details span:last-child {
+            color: var(--highlight);
+        }
+
+        .modal-close {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--dark-accent) 0%, #1a3a45 100%);
+            color: var(--white);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: var(--transition);
+            position: relative;
+            z-index: 1;
+        }
+
+        .modal-close:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(51, 87, 101, 0.4);
+        }
+
+        /* Emergency Alert */
+        .emergency-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(255, 65, 108, 0.3);
+            z-index: 2000;
+            animation: slideInRight 0.5s ease;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .emergency-alert h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .emergency-alert p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: var(--white);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .service-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .urgency-levels {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .modal-content {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>
+                <i>🔥</i>
+                Gas Services
+            </h1>
+            <p>Book LPG cylinders, pay bills, and report gas leakages with emergency support</p>
+        </div>
+         <a href="index.html" class="back-btn">
+    <span class="arrow">&#8592;</span> Back
+</a>
+        <!-- Service Grid -->
+        <div class="service-grid">
+            <!-- LPG Booking Card -->
+            <div class="service-card">
+                <div class="card-header lpg-booking">
+                    <h2>LPG Booking</h2>
+                    <p>Book your cooking gas cylinder</p>
+                </div>
+                <div class="card-body">
+                    <form id="lpgBookingForm" onsubmit="return false;">
+                        <div class="form-group">
+                            <label>
+                                <i>🔢</i>
+                                Consumer Number
+                            </label>
+                            <input type="text" id="lpgConsumerNo" maxlength="10" placeholder="Enter 10-digit consumer number">
+                            <span class="error-message" id="lpgConsumerError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i>🏢</i>
+                                Gas Agency
+                            </label>
+                            <select id="gasAgency" class="agency-select">
+                                <option value="">Select Gas Agency</option>
+                                <option value="indian">Indian Oil (Indane)</option>
+                                <option value="bharat">Bharat Gas</option>
+                                <option value="hp">HP Gas</option>
+                            </select>
+                            <span class="error-message" id="agencyError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i>📍</i>
+                                Delivery Address
+                            </label>
+                            <textarea id="deliveryAddress" rows="3" placeholder="Enter complete delivery address with landmark"></textarea>
+                            <span class="error-message" id="addressError"></span>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="bookLPG()">
+                            <span class="btn-text">Book LPG Cylinder</span>
+                        </button>
+                    </form>
+
+                    <!-- Booking Status -->
+                    <div class="booking-status" id="bookingStatus">
+                        <div class="status-header">
+                            <div class="status-icon">🔥</div>
+                            <div class="status-info">
+                                <div class="status-title" id="bookingTitle">Booking Confirmed!</div>
+                                <div class="status-ref" id="bookingRef">Ref: LPG123456789</div>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <div class="status-details">
+                            <div class="status-detail-item">
+                                <div class="detail-label">Expected Delivery</div>
+                                <div class="detail-value" id="deliveryDate">Tomorrow</div>
+                            </div>
+                            <div class="status-detail-item">
+                                <div class="detail-label">Status</div>
+                                <div class="detail-value" id="bookingStatusText">Confirmed</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gas Bill Payment Card -->
+            <div class="service-card">
+                <div class="card-header bill-payment">
+                    <h2>Gas Bill Payment</h2>
+                    <p>Pay your gas bills online</p>
+                </div>
+                <div class="card-body">
+                    <form id="billPaymentForm" onsubmit="return false;">
+                        <div class="form-group">
+                            <label>
+                                <i>🔢</i>
+                                Consumer ID
+                            </label>
+                            <input type="text" id="consumerId" maxlength="12" placeholder="Enter consumer ID">
+                            <span class="error-message" id="consumerIdError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i>💰</i>
+                                Amount (₹)
+                            </label>
+                            <input type="number" id="billAmount" min="1" step="0.01" placeholder="Enter amount">
+                            <span class="error-message" id="billAmountError"></span>
+                        </div>
+
+                        <button class="btn btn-success" onclick="payGasBill()">
+                            Pay Bill
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Gas Leakage Complaint Card -->
+            <div class="service-card">
+                <div class="card-header leakage-complaint">
+                    <h2>⚠️ Gas Leakage Complaint</h2>
+                    <p>Emergency reporting for gas leakages</p>
+                </div>
+                <div class="card-body">
+                    <form id="leakageForm" onsubmit="return false;">
+                        <div class="form-group">
+                            <label>
+                                <i>⚡</i>
+                                Urgency Level
+                            </label>
+                            <div class="urgency-levels">
+                                <div class="urgency-level low" onclick="selectUrgency('low', this)">
+                                    <i>🟢</i>
+                                    <span>Low</span>
+                                    <small>Minor smell</small>
+                                </div>
+                                <div class="urgency-level medium" onclick="selectUrgency('medium', this)">
+                                    <i>🟡</i>
+                                    <span>Medium</span>
+                                    <small>Strong smell</small>
+                                </div>
+                                <div class="urgency-level high" onclick="selectUrgency('high', this)">
+                                    <i>🔴</i>
+                                    <span>High</span>
+                                    <small>Emergency</small>
+                                </div>
+                            </div>
+                            <input type="hidden" id="urgencyLevel">
+                            <span class="error-message" id="urgencyError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i>📍</i>
+                                Address
+                            </label>
+                            <textarea id="leakageAddress" rows="3" placeholder="Enter complete address with landmark"></textarea>
+                            <span class="error-message" id="leakageAddressError"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i>📞</i>
+                                Contact Number
+                            </label>
+                            <input type="tel" id="contactNumber" maxlength="10" placeholder="Enter 10-digit mobile number">
+                            <span class="error-message" id="contactError"></span>
+                        </div>
+
+                        <button class="btn btn-danger" onclick="reportLeakage()">
+                            🚨 Report Emergency
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon" id="modalIcon">✅</div>
+            <h3 id="modalTitle">Success!</h3>
+            <p id="modalMessage">Your request has been processed successfully.</p>
+            <div class="modal-details" id="modalDetails">
+                <div>
+                    <span>Reference Number:</span>
+                    <span id="refNumber">REF123456</span>
+                </div>
+                <div>
+                    <span>Date & Time:</span>
+                    <span id="modalDateTime">15 Feb 2024, 10:30 AM</span>
+                </div>
+                <div>
+                    <span>Amount:</span>
+                    <span id="modalAmount">-</span>
+                </div>
+            </div>
+            <button class="modal-close" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // State management
+        let selectedUrgency = '';
+
+        // Select urgency level
+        function selectUrgency(level, element) {
+            document.querySelectorAll('.urgency-level').forEach(el => {
+                el.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            document.getElementById('urgencyLevel').value = level;
+            selectedUrgency = level;
+            document.getElementById('urgencyError').textContent = '';
+        }
+
+        // Book LPG
+        function bookLPG() {
+            clearErrors();
+            
+            const consumerNo = document.getElementById('lpgConsumerNo').value;
+            const agency = document.getElementById('gasAgency').value;
+            const address = document.getElementById('deliveryAddress').value;
+            
+            let isValid = true;
+            
+            // Validate consumer number
+            if (!consumerNo) {
+                showError('lpgConsumerError', 'Consumer number is required');
+                isValid = false;
+            } else if (!/^\d{10}$/.test(consumerNo)) {
+                showError('lpgConsumerError', 'Consumer number must be 10 digits');
+                isValid = false;
+            }
+            
+            // Validate agency
+            if (!agency) {
+                showError('agencyError', 'Please select gas agency');
+                isValid = false;
+            }
+            
+            // Validate address
+            if (!address) {
+                showError('addressError', 'Delivery address is required');
+                isValid = false;
+            }
+            
+            if (isValid) {
+                // Show processing
+                const btn = document.querySelector('#lpgBookingForm .btn-primary');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<span class="loading-spinner"></span> Processing...';
+                btn.disabled = true;
+                
+                // Simulate booking
+                setTimeout(() => {
+                    const refNo = 'LPG' + Math.floor(Math.random() * 10000000);
+                    const agencyNames = {
+                        'indian': 'Indian Oil (Indane)',
+                        'bharat': 'Bharat Gas',
+                        'hp': 'HP Gas'
+                    };
+                    
+                    // Show booking status
+                    document.getElementById('bookingTitle').textContent = 'Booking Confirmed!';
+                    document.getElementById('bookingRef').textContent = `Ref: ${refNo}`;
+                    
+                    // Calculate delivery date (1-3 days from now)
+                    const deliveryDate = new Date();
+                    deliveryDate.setDate(deliveryDate.getDate() + Math.floor(Math.random() * 3) + 1);
+                    document.getElementById('deliveryDate').textContent = deliveryDate.toLocaleDateString('en-IN', { 
+                        weekday: 'short', 
+                        day: 'numeric', 
+                        month: 'short' 
+                    });
+                    
+                    document.getElementById('bookingStatus').classList.add('active');
+                    
+                    // Show success modal
+                    document.getElementById('modalIcon').innerHTML = '🔥';
+                    document.getElementById('modalTitle').textContent = 'LPG Booked Successfully!';
+                    document.getElementById('modalMessage').textContent = `Your cylinder has been booked with ${agencyNames[agency]}`;
+                    document.getElementById('refNumber').textContent = refNo;
+                    document.getElementById('modalDateTime').textContent = new Date().toLocaleString();
+                    document.getElementById('modalAmount').textContent = agencyNames[agency];
+                    
+                    document.getElementById('successModal').classList.add('active');
+                    
+                    // Show alert
+                    showAlert('LPG Booking Confirmed! Your cylinder will be delivered within 3 working days.', 'success');
+                    
+                    // Reset button
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }, 2000);
+            }
+        }
+
+        // Pay Gas Bill
+        function payGasBill() {
+            clearErrors();
+            
+            const consumerId = document.getElementById('consumerId').value;
+            const amount = document.getElementById('billAmount').value;
+            
+            let isValid = true;
+            
+            if (!consumerId) {
+                showError('consumerIdError', 'Consumer ID is required');
+                isValid = false;
+            }
+            
+            if (!amount) {
+                showError('billAmountError', 'Amount is required');
+                isValid = false;
+            } else if (parseFloat(amount) <= 0) {
+                showError('billAmountError', 'Amount must be greater than 0');
+                isValid = false;
+            }
+            
+            if (isValid) {
+                // Show processing
+                const btn = document.querySelector('#billPaymentForm .btn-success');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<span class="loading-spinner"></span> Processing...';
+                btn.disabled = true;
+                
+                setTimeout(() => {
+                    const txnId = 'TXN' + Math.floor(Math.random() * 10000000);
+                    
+                    document.getElementById('modalIcon').innerHTML = '💰';
+                    document.getElementById('modalTitle').textContent = 'Payment Successful!';
+                    document.getElementById('modalMessage').textContent = `Your gas bill payment of ₹${amount} is complete.`;
+                    document.getElementById('refNumber').textContent = txnId;
+                    document.getElementById('modalDateTime').textContent = new Date().toLocaleString();
+                    document.getElementById('modalAmount').textContent = '₹' + parseFloat(amount).toFixed(2);
+                    
+                    document.getElementById('successModal').classList.add('active');
+                    
+                    showAlert(`Payment of ₹${amount} completed successfully. Transaction ID: ${txnId}`, 'success');
+                    
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    
+                    // Reset form
+                    document.getElementById('billPaymentForm').reset();
+                }, 2000);
+            }
+        }
+
+        // Report Gas Leakage
+        function reportLeakage() {
+            clearErrors();
+            
+            const address = document.getElementById('leakageAddress').value;
+            const contact = document.getElementById('contactNumber').value;
+            
+            let isValid = true;
+            
+            if (!selectedUrgency) {
+                showError('urgencyError', 'Please select urgency level');
+                isValid = false;
+            }
+            
+            if (!address) {
+                showError('leakageAddressError', 'Address is required');
+                isValid = false;
+            }
+            
+            if (!contact) {
+                showError('contactError', 'Contact number is required');
+                isValid = false;
+            } else if (!/^\d{10}$/.test(contact)) {
+                showError('contactError', 'Please enter a valid 10-digit mobile number');
+                isValid = false;
+            }
+            
+            if (isValid) {
+                const complaintId = 'GAS' + Math.floor(Math.random() * 10000);
+                const urgencyNames = {
+                    'low': 'Low - Minor smell',
+                    'medium': 'Medium - Strong smell',
+                    'high': 'HIGH - EMERGENCY'
+                };
+                
+                // Show emergency alert for high urgency
+                if (selectedUrgency === 'high') {
+                    showEmergencyAlert(address, contact);
+                }
+                
+                document.getElementById('modalIcon').innerHTML = '⚠️';
+                document.getElementById('modalTitle').textContent = 'Complaint Registered!';
+                document.getElementById('modalMessage').textContent = `Your gas leakage complaint has been registered.`;
+                document.getElementById('refNumber').textContent = complaintId;
+                document.getElementById('modalDateTime').textContent = new Date().toLocaleString();
+                document.getElementById('modalAmount').textContent = urgencyNames[selectedUrgency];
+                
+                document.getElementById('successModal').classList.add('active');
+                
+                showAlert(`Complaint registered successfully. Our team will contact you immediately.`, selectedUrgency === 'high' ? 'error' : 'warning');
+                
+                // Reset form
+                document.getElementById('leakageForm').reset();
+                document.querySelectorAll('.urgency-level').forEach(el => el.classList.remove('selected'));
+                selectedUrgency = '';
+            }
+        }
+
+        // Show emergency alert
+        function showEmergencyAlert(address, contact) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'emergency-alert';
+            alertDiv.innerHTML = `
+                <h4>🚨 EMERGENCY RESPONSE DISPATCHED</h4>
+                <p><strong>Address:</strong> ${address}</p>
+                <p><strong>Contact:</strong> ${contact}</p>
+                <p><strong>Response Team:</strong> Enroute (ETA: 10 minutes)</p>
+            `;
+            
+            document.body.appendChild(alertDiv);
+            
+            // Remove after 10 seconds
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 10000);
+        }
+
+        // Show alert
+        function showAlert(message, type = 'info') {
+            const alertDiv = document.createElement('div');
+            alertDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                background: ${type === 'success' ? '#7B9669' : type === 'error' ? '#ff4444' : '#ffbb33'};
+                color: white;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                z-index: 2000;
+                animation: slideInRight 0.3s ease;
+            `;
+            alertDiv.textContent = message;
+            
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+
+        // Helper functions
+        function showError(elementId, message) {
+            document.getElementById(elementId).textContent = message;
+        }
+
+        function clearErrors() {
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.textContent = '';
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('successModal').classList.remove('active');
+        }
+
+        // Simulate periodic alerts for demo
+        setInterval(() => {
+            const alerts = [
+                '📢 Reminder: Book your LPG cylinder before stock runs out!',
+                '⚠️ Preventive maintenance in your area on Sunday',
+                '💰 New gas connection offers available!'
+            ];
+            
+            const randomAlert = alerts[Math.floor(Math.random() * alerts.length)];
+            showAlert(randomAlert, 'info');
+        }, 60000); // Show random alert every minute
+    </script>
+</body>
+</html>
